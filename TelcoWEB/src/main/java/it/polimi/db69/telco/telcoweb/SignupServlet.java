@@ -30,20 +30,22 @@ public class SignupServlet extends HttpServlet {
 
     @Override
     public void init() {
-
         ServletContext servletContext = getServletContext();
         ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
         templateResolver.setTemplateMode(TemplateMode.HTML);
         this.templateEngine = new TemplateEngine();
         this.templateEngine.setTemplateResolver(templateResolver);
         templateResolver.setSuffix(".html");
-
-
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        resp.setContentType("text/html");
 
+        ServletContext servletContext = getServletContext();
+        WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
+
+        templateEngine.process("/WEB-INF/login.html", ctx, resp.getWriter());
     }
 
     @Override

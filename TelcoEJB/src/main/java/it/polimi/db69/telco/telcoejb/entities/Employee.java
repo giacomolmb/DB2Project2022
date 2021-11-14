@@ -8,7 +8,7 @@ import javax.persistence.*;
 @NamedQuery(name = "Employee.checkEmployeeCredentials",
         query = "select e " +
                 "from Employee e " +
-                "where e.username =: username and e.password =:password")
+                "where e.username = :username and e.password = :password")
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
