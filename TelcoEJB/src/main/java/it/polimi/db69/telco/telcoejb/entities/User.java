@@ -8,7 +8,7 @@ import java.util.Collection;
 @Table(name="user")
 @NamedQueries({
         @NamedQuery(name = "User.checkCredentials", query = "SELECT u FROM User u WHERE u.username = ?1 AND u.password = ?2"),
-        @NamedQuery(name = "User.getAllUsers", query = "SELECT u FROM User u"),
+        @NamedQuery(name = "User.getAllUsers", query = "SELECT u FROM User u")
 })
 public class User {
     @Id
