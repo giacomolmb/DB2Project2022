@@ -46,7 +46,7 @@ public class SignupServlet extends HttpServlet {
         ServletContext servletContext = getServletContext();
         WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
 
-        templateEngine.process("/WEB-INF/login.html", ctx, resp.getWriter());
+        templateEngine.process("/WEB-INF/index.html", ctx, resp.getWriter());
     }
 
     @Override
@@ -65,7 +65,7 @@ public class SignupServlet extends HttpServlet {
             final WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
             ctx.setVariable("signupErrorMessage", e.getMessage());
 
-            templateEngine.process("/WEB-INF/login.html", ctx, resp.getWriter());
+            templateEngine.process("/WEB-INF/index.html", ctx, resp.getWriter());
             return;
         }
 

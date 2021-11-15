@@ -52,7 +52,7 @@ public class SigninServlet extends HttpServlet {
             final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
             ctx.setVariable("signinErrorMessage", e.getMessage());
 
-            templateEngine.process("/WEB-INF/login.html", ctx, response.getWriter());
+            templateEngine.process("/WEB-INF/index.html", ctx, response.getWriter());
             return;
         }
 
@@ -71,7 +71,7 @@ public class SigninServlet extends HttpServlet {
             final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
             ctx.setVariable("signinErrorMessage", "Incorrect username or password.");
 
-            templateEngine.process("/WEB-INF/login.html", ctx, response.getWriter());
+            templateEngine.process("/WEB-INF/index.html", ctx, response.getWriter());
         } else {
             /*
             try {
