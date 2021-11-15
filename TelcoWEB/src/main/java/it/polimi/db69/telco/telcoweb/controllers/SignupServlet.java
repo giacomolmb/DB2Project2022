@@ -1,4 +1,4 @@
-package it.polimi.db69.telco.telcoweb;
+package it.polimi.db69.telco.telcoweb.controllers;
 
 import it.polimi.db69.telco.telcoejb.entities.User;
 import it.polimi.db69.telco.telcoejb.services.UserService;
@@ -13,20 +13,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.regex.Pattern;
 
+import it.polimi.db69.telco.telcoweb.exceptions.InputException;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 
-@WebServlet(name = "SignupServlet", value = "/SignupServlet")
+@WebServlet(name = "SignupServlet", value = "/signup")
 public class SignupServlet extends HttpServlet {
-
     private TemplateEngine templateEngine;
+
     @EJB(name = "it.polimi.db69.telco.telcoejb.services/UserService")
     private UserService userService;
-    private Object StringEscapeUtils;
 
     @Override
     public void init() {
@@ -55,7 +56,18 @@ public class SignupServlet extends HttpServlet {
         String password = req.getParameter("reg-password");
         String confirmPassword = req.getParameter("reg-conf-password");
 
-        //mancano tutti i check
+        try{
+            checkInputs(username, password, confirmPassword, email);
+        } catch (InputException e){
+            resp.setContentType("text/html");
+
+            ServletContext servletContext = getServletContext();
+            final WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
+            ctx.setVariable("signupErrorMessage", e.getMessage());
+
+            templateEngine.process("/WEB-INF/login.html", ctx, resp.getWriter());
+            return;
+        }
 
         try {
             User user = userService.createUser(email, username, password);
@@ -65,5 +77,44 @@ public class SignupServlet extends HttpServlet {
 
         resp.sendRedirect(getServletContext().getContextPath()+"/hello-servlet");
 
+    }
+
+    private void checkInputs(String username, String password, String confirmPassword, String email) throws InputException {
+        if(username == null || username.isEmpty()){
+            throw new InputException("Please insert a username!");
+        }
+
+        if(email == null || email.isEmpty()){
+            throw new InputException("Please insert an Email!");
+        }
+
+        if(password == null || password.isEmpty()){
+            throw new InputException("Please insert a password!");
+        }
+
+        if(confirmPassword == null || confirmPassword.isEmpty()){
+            throw new InputException("Please confirm the password!");
+        }
+
+        if (username.length() > 45) {
+            throw new InputException("Username is too long (max 45 chars)!");
+        }
+
+        if (email.length() > 45) {
+            throw new InputException("Email is too long (max 45 chars)!");
+        }
+
+        Pattern pattern = Pattern.compile("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
+        if (!pattern.matcher(email).matches()) {
+            throw new InputException("Invalid email address!");
+        }
+
+        if (password.length() > 45 || password.length() < 8) {
+            throw new InputException("Password length not valid (min 8 max 45 chars)!");
+        }
+
+        if (!confirmPassword.equals(password)) {
+            throw new InputException("Password entered are not the same!");
+        }
     }
 }
