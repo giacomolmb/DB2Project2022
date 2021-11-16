@@ -11,4 +11,14 @@ public class FixedInternet extends Service{
 
     @Column(name = "gigafee", nullable = false)
     private double gigafee;
+
+    @Override
+    public String printService() {
+        return "Fixed Internet: " + giga + " Gigabytes";
+    }
+
+    @Override
+    public String printExtraFees() {
+        return gigafee + " for each extra GB";
+    }
 }

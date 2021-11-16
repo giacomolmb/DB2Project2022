@@ -20,4 +20,14 @@ public class MobilePhone extends Service{
 
     @Column(name = "smsfee", nullable = false)
     private double smsfee;
+
+    @Override
+    public String printService() {
+        return "Mobile Phone: " + minutes + " minutes, " + sms + " SMSs";
+    }
+
+    @Override
+    public String printExtraFees() {
+        return minutesfee + " for each extra minute, " + smsfee + " for each extra SMS";
+    }
 }

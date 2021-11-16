@@ -19,7 +19,8 @@ public abstract class Service {
             inverseJoinColumns=@JoinColumn(name="packageid"))
     private Collection<ServicePackage> servicePackages;
 
+    public abstract String printService();
 
-    //todo generalizzazione
+    public abstract String printExtraFees();
 
 }

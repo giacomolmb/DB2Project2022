@@ -6,7 +6,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 @Entity
-@DiscriminatorValue("fixedinternet")
+@DiscriminatorValue("mobileinternet")
 public class MobileInternet extends Service{
 
     @Column(name = "giga", nullable = false)
@@ -15,4 +15,13 @@ public class MobileInternet extends Service{
     @Column(name = "gigafee", nullable = false)
     private double gigafee;
 
+    @Override
+    public String printService() {
+        return "Mobile Internet: " + giga + " Gigabytes";
+    }
+
+    @Override
+    public String printExtraFees() {
+        return gigafee + " for each extra GB";
+    }
 }
