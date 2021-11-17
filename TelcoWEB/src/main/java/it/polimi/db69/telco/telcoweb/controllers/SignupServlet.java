@@ -75,7 +75,7 @@ public class SignupServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        resp.sendRedirect(getServletContext().getContextPath()+"/hello-servlet");
+        resp.sendRedirect(getServletContext().getContextPath()+"/signin");
 
     }
 
