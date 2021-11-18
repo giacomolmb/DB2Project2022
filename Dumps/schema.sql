@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `alert`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `alert` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `userId` int NOT NULL,
   `datetime` datetime NOT NULL,
   `amount` double NOT NULL,
@@ -52,12 +52,12 @@ DROP TABLE IF EXISTS `employee`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `employee` (
-  `ID` int NOT NULL,
+  `ID` int NOT NULL AUTO_INCREMENT,
   `username` varchar(45) DEFAULT NULL,
   `password` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `username_UNIQUE` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -66,7 +66,7 @@ CREATE TABLE `employee` (
 
 LOCK TABLES `employee` WRITE;
 /*!40000 ALTER TABLE `employee` DISABLE KEYS */;
-INSERT INTO `employee` VALUES (0,'admin','admin');
+INSERT INTO `employee` VALUES (1,'admin','admin');
 /*!40000 ALTER TABLE `employee` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -78,7 +78,7 @@ DROP TABLE IF EXISTS `login_log`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `login_log` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `logtime` datetime NOT NULL,
   `userid` int NOT NULL,
   PRIMARY KEY (`id`),
@@ -104,7 +104,7 @@ DROP TABLE IF EXISTS `order`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `order` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `datetime` datetime NOT NULL,
   `status` varchar(45) NOT NULL DEFAULT 'PENDING',
   `userid` int DEFAULT NULL,
@@ -131,7 +131,7 @@ DROP TABLE IF EXISTS `package`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `package` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
@@ -231,7 +231,7 @@ DROP TABLE IF EXISTS `service`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `service` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `type` varchar(45) NOT NULL,
   `minutes` int DEFAULT NULL,
   `sms` int DEFAULT NULL,
@@ -240,7 +240,7 @@ CREATE TABLE `service` (
   `smsfee` double DEFAULT NULL,
   `gigafee` double DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -249,6 +249,7 @@ CREATE TABLE `service` (
 
 LOCK TABLES `service` WRITE;
 /*!40000 ALTER TABLE `service` DISABLE KEYS */;
+INSERT INTO `service` VALUES (1,'mobilephone',1,1,NULL,1,1,NULL),(2,'fixedinternet',NULL,NULL,1,NULL,NULL,1);
 /*!40000 ALTER TABLE `service` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -260,13 +261,13 @@ DROP TABLE IF EXISTS `subscription`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `subscription` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `vpid` int NOT NULL,
   `orderid` int NOT NULL,
   `startdate` date NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `subscription_vpid_idx` (`vpid`),
   KEY `subscription_orderid_idx` (`orderid`),
+  KEY `subscription_vpid_idx` (`vpid`),
   CONSTRAINT `subscription_orderid` FOREIGN KEY (`orderid`) REFERENCES `order` (`id`),
   CONSTRAINT `subscription_vpid` FOREIGN KEY (`vpid`) REFERENCES `validityperiod` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
@@ -344,13 +345,13 @@ DROP TABLE IF EXISTS `validityperiod`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `validityperiod` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `packageid` int NOT NULL,
   `months` int NOT NULL,
   `fee` double NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `validityperiod_fk_idx` (`packageid`),
-  CONSTRAINT `validityperiod_fk` FOREIGN KEY (`packageid`) REFERENCES `package` (`id`)
+  KEY `validityperiod_packageid_idx` (`packageid`),
+  CONSTRAINT `validityperiod_packageid` FOREIGN KEY (`packageid`) REFERENCES `package` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -372,4 +373,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-11-18  9:46:21
+-- Dump completed on 2021-11-18 17:32:08

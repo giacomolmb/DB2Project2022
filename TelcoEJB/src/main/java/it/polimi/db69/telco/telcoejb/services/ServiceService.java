@@ -19,23 +19,15 @@ public class ServiceService {
         return em.find(Service.class, serviceId);
     }
 
-    public Collection<Service> findServiceByType(ServiceType type){
-        List<Service> services;
-        services = em.createNamedQuery( "service.getByType", Service.class)
-                .setParameter("type", type).getResultList();
-        //se non esiste nessun servizio di questo tipo ??
-        return services;
-    }
-
-    public Service createService(ServiceType type, int min, int sms, double feemin, double feesms, int giga, double feegiga){
+    public Service createService(String type, int min, int sms, double feemin, double feesms, int giga, double feegiga){
         Service service;
-        if (type.equals(ServiceType.fixedphone)){
+        if (type.equals("fixedphone")){
             service = new FixedPhone();
         }
-        else if (type.equals(ServiceType.mobilephone)){
+        else if (type.equals("mobilephone")){
             service = new MobilePhone(min, sms, feemin, feesms);
         }
-        else if (type.equals(ServiceType.fixedinternet)){
+        else if (type.equals("fixedinternet")){
             service = new FixedInternet(giga, feegiga);
         }
         else {
