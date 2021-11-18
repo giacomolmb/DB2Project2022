@@ -5,9 +5,13 @@ import java.util.Collection;
 
 @Entity
 @Table(name="product")
+@NamedQueries({
+        @NamedQuery(name = "Product.getProductByName", query = "SELECT p FROM Product p WHERE p.name = :name")
+})
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private int id;
 
     @Column(name="name", nullable = false, length = 45)
@@ -25,8 +29,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(int id, String name, double fee) {
-        this.id = id;
+    public Product(String name, double fee) {
         this.name = name;
         this.fee = fee;
     }

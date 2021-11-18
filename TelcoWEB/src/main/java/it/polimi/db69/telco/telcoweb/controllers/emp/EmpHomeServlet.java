@@ -1,7 +1,14 @@
 package it.polimi.db69.telco.telcoweb.controllers.emp;
 
 import it.polimi.db69.telco.telcoejb.entities.Employee;
+import it.polimi.db69.telco.telcoejb.services.EmployeeService;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import javax.ejb.EJB;
+import javax.servlet.ServletContext;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
@@ -9,26 +16,37 @@ import java.io.PrintWriter;
 
 @WebServlet(name = "EmpHomeServlet", value = "/employeehomepage")
 public class EmpHomeServlet extends HttpServlet {
-    private String message;
+    TemplateEngine templateEngine;
+
+    @EJB(name = "it.polimi.db69.telco.telcoejb.services/EmployeeService")
+    EmployeeService employeeService;
 
     public void init() {
-        message = "Hello World!";
+        ServletContext servletContext = getServletContext();
+        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
+        templateResolver.setTemplateMode(TemplateMode.HTML);
+        this.templateEngine = new TemplateEngine();
+        this.templateEngine.setTemplateResolver(templateResolver);
+        templateResolver.setSuffix(".html");
     }
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/html");
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setContentType("text/html");
 
-        Employee employee = (Employee) request.getSession().getAttribute("employee");
+        Employee employee = (Employee) req.getSession().getAttribute("employee");
+
+        resp.setContentType("text/html");
+
+        ServletContext servletContext = getServletContext();
+        WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
 
         if(employee != null){
-            message = "Welcome back, employee " + employee.getUsername();
+            ctx.setVariable("welcomeMessage", "Welcome back, " + employee.getUsername() + "!");
         }
 
-        // Hello
-        PrintWriter out = response.getWriter();
-        out.println("<html><body>");
-        out.println("<h1>" + message + "</h1>");
-        out.println("</body></html>");
+        String path = "/WEB-INF/employee/emphomepage.html";
+
+        templateEngine.process(path, ctx, resp.getWriter());
     }
 
     public void destroy() {
