@@ -14,6 +14,10 @@ public class ProductService {
 
     public ProductService(){}
 
+    public Product findProductById(int productId){
+        return em.find(Product.class, productId);
+    }
+
     public Product createProduct(String name, double fee) throws NonUniqueException{
         if (em.createNamedQuery("Product.getProductByName", Product.class)
                 .setParameter("name", name).setMaxResults(1).getResultStream().findFirst().orElse(null) != null)

@@ -12,6 +12,14 @@ public class FixedInternet extends Service{
     @Column(name = "gigafee", nullable = false)
     private double gigafee;
 
+    public FixedInternet(int giga, double gigafee) {
+        this.giga = giga;
+        this.gigafee = gigafee;
+    }
+
+    public FixedInternet() {
+    }
+
     @Override
     public String printService() {
         return "Fixed Internet: " + giga + " Gigabytes";

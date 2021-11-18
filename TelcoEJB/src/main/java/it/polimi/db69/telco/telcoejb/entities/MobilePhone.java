@@ -21,6 +21,16 @@ public class MobilePhone extends Service{
     @Column(name = "smsfee", nullable = false)
     private double smsfee;
 
+    public MobilePhone() {
+    }
+
+    public MobilePhone(int minutes, int sms, double minutesfee, double smsfee) {
+        this.minutes = minutes;
+        this.sms = sms;
+        this.minutesfee = minutesfee;
+        this.smsfee = smsfee;
+    }
+
     @Override
     public String printService() {
         return "Mobile Phone: " + minutes + " minutes, " + sms + " SMSs";

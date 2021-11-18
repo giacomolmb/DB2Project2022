@@ -15,6 +15,14 @@ public class MobileInternet extends Service{
     @Column(name = "gigafee", nullable = false)
     private double gigafee;
 
+    public MobileInternet(int giga, double gigafee) {
+        this.giga = giga;
+        this.gigafee = gigafee;
+    }
+
+    public MobileInternet() {
+    }
+
     @Override
     public String printService() {
         return "Mobile Internet: " + giga + " Gigabytes";

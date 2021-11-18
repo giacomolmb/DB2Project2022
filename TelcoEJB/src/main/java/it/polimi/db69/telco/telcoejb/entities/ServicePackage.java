@@ -6,6 +6,11 @@ import java.util.Collection;
 
 @Entity
 @Table(name="package")
+@NamedQueries({
+        @NamedQuery(name = "package.findByName", query = "SELECT p FROM ServicePackage p WHERE p.name = :name"),
+        @NamedQuery(name = "package.count", query = "SELECT COUNT(p) FROM ServicePackage p")
+})
+
 public class ServicePackage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,13 +35,10 @@ public class ServicePackage {
             inverseJoinColumns=@JoinColumn(name="serviceid"))
     private Collection<Service> services;
 
-
-
     public ServicePackage() {
     }
 
-    public ServicePackage(int id, String name) {
-        this.id = id;
+    public ServicePackage(String name) {
         this.name = name;
     }
 
@@ -62,5 +64,13 @@ public class ServicePackage {
 
     public void setProducts(Collection<Product> products) {
         this.products = products;
+    }
+
+    public Collection<Service> getServices() {
+        return services;
+    }
+
+    public void setServices(Collection<Service> services) {
+        this.services = services;
     }
 }
