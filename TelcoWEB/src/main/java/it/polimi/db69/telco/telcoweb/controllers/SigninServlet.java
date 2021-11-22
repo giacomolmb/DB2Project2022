@@ -83,7 +83,7 @@ public class SigninServlet extends HttpServlet {
             */
 
             request.getSession().setAttribute("user", user);
-            response.sendRedirect(getServletContext().getContextPath() + "/hello-servlet");
+            response.sendRedirect(getServletContext().getContextPath() + "/homepage");
         }
     }
 

@@ -10,6 +10,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -43,11 +44,6 @@ public class ServicePackageService {
     public ServicePackage addService(int serviceId, int packageId){
         ServicePackage servicePackage = findPackageById(packageId);
         Service service = serviceService.findServiceById(serviceId);
-
-        ArrayList<Service> services = new ArrayList<>();
-        services.add(service);
-        servicePackage.setServices(services);
-
         return servicePackage;
     }
 
@@ -60,5 +56,11 @@ public class ServicePackageService {
         servicePackage.setProducts(products);
 
         return servicePackage;
+    }
+
+    public Collection<ServicePackage> findAllPackages (){
+        if (em.createNamedQuery("package.getAll", ServicePackage.class).getResultList().isEmpty())
+            return null;
+        return em.createNamedQuery("package.getAll", ServicePackage.class).getResultList();
     }
 }

@@ -13,40 +13,39 @@
     <div class="container">
         <br>
         <h1>Telco Homepage</h1>
-        <h3>Welcome back, admin</h3>
+        <div class="card">
+            <div class="card-body" data-th-text="${user}">
+                Not signed in..
+            </div>
+        </div>
         <hr>
+
         <h3>Service Packages</h3>
-        <div class="card m-3">
+
+        <div class="card m-3" data-th-if="${packages == null}" >
             <div class="card-body">
-                <h3 class="card-title">Service Package name</h3>
+                <h3 class="card-title">
+                    There are no packages available at the moment
+                </h3>
+            </div>
+        </div>
+
+        <div class="card m-3" data-th-if="${packages != null}" >
+            <div class="card-body" data-th-each="package : ${packages}">
+                <h3 class="card-title" data-th-text = ${package.name}> Service Package name</h3>
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="serviceHeader1">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseServices1" aria-expanded="false" aria-controls="collapseServices1">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseServices1" aria-expanded="false" aria-controls="collapseServices1">
                             Services
                         </button>
                     </h2>
                     <div id="collapseServices1" class="accordion-collapse collapse" aria-labelledby="serviceHeader1">
                         <div class="accordion-body">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">An item</li>
-                                <li class="list-group-item">A second item</li>
-                                <li class="list-group-item">A third item</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="productsHeader1">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseproductss1" aria-expanded="false" aria-controls="collapseproductss1">
-                            Optional Products
-                        </button>
-                    </h2>
-                    <div id="collapseproductss1" class="accordion-collapse collapse" aria-labelledby="productsHeader1">
-                        <div class="accordion-body">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">An item</li>
-                                <li class="list-group-item">A second item</li>
-                                <li class="list-group-item">A third item</li>
+                            <ul class="list-group list-group-flush" >
+                                <li class="list-group-item" data-th-each="service : ${package.services}">
+                                    <span data-th-text="${service.printService()} +  ${service.printExtraFees()}">boh</span>
+                                </li>
                             </ul>
                         </div>
                     </div>

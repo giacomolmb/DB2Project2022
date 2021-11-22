@@ -15,11 +15,9 @@ public abstract class Service {
     @Column(name="id", nullable = false)
     private int id;
 
-    @ManyToMany
-    @JoinTable(name="packageservice",
-            joinColumns=@JoinColumn(name="serviceid"),
-            inverseJoinColumns=@JoinColumn(name="packageid"))
-    private Collection<ServicePackage> servicePackages;
+    @ManyToOne
+    @JoinColumn(name="packageid")
+    private ServicePackage servicePackage;
 
     public abstract String printService();
 

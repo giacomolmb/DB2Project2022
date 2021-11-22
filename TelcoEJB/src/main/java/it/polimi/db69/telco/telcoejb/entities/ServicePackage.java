@@ -8,7 +8,7 @@ import java.util.Collection;
 @Table(name="package")
 @NamedQueries({
         @NamedQuery(name = "package.findByName", query = "SELECT p FROM ServicePackage p WHERE p.name = :name"),
-        @NamedQuery(name = "package.count", query = "SELECT COUNT(p) FROM ServicePackage p")
+        @NamedQuery(name = "package.getAll", query = "SELECT p FROM ServicePackage p")
 })
 
 public class ServicePackage {
@@ -23,17 +23,16 @@ public class ServicePackage {
     @OneToMany(mappedBy = "vpServicePackage")
     private Collection<ValidityPeriod> packageValidityPeriods;
 
+    @OneToMany(mappedBy = "servicePackage")
+    private Collection<Service> services;
+
+
     @ManyToMany
     @JoinTable(name="packageproduct",
             joinColumns=@JoinColumn(name="productid"),
             inverseJoinColumns=@JoinColumn(name="packageid"))
     private Collection<Product> products;
 
-    @ManyToMany
-    @JoinTable(name="packageservice",
-            joinColumns=@JoinColumn(name="packageid"),
-            inverseJoinColumns=@JoinColumn(name="serviceid"))
-    private Collection<Service> services;
 
     public ServicePackage() {
     }
