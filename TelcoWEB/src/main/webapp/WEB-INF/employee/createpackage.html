@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script defer src="../../js/createpackage.js"></script>
+    <title>Create Package</title>
+</head>
+<body>
+    <div class="container">
+        <br>
+        <h1>Create Package</h1>
+        <div class="card mx-auto">
+            <div class="card-body">
+                <form name="mainForm" id="mainForm" onsubmit="return onSubmit()" method="post">
+                    <div class="mb-3">
+                        <label for="packageName" class="form-label"><h3>Service Package name</h3></label>
+                        <input type="text" class="form-control" id="packageName" name="packageName">
+                    </div>
+                    <hr>
+                    <h5>Package services</h5>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr class="d-flex">
+                                <th class="col-3" scope="col">Type</th>
+                                <th class="col-1" scope="col">#Minutes</th>
+                                <th class="col-1" scope="col">#SMSs</th>
+                                <th class="col-1" scope="col">#GBs</th>
+                                <th class="col-2" scope="col">Extra min. fee</th>
+                                <th class="col-2" scope="col">Extra SMS fee</th>
+                                <th class="col-2" scope="col">Extra GB fee</th>
+                            </tr>
+                        </thead>
+                        <tbody id="serviceTableBody">
+                            <tr class="d-flex">
+                                <td class="col-3">
+                                    <select onchange="enableInputs(1)" class="form-select form-select-sm" id="type1" name="type1">
+                                        <option value="mobilephone">Mobile phone</option>
+                                        <option value="fixedphone">Fixed phone</option>
+                                        <option value="mobileinternet">Mobile internet</option>
+                                        <option value="fixedinternet">Fixed internet</option>
+                                    </select>
+                                </td>
+                                <td class="col-1">
+                                    <input type="text" class="form-control form-control-sm" id="min1" name="min1">
+                                </td>
+                                <td class="col-1">
+                                    <input type="text" class="form-control form-control-sm" id="sms1" name="sms1">
+                                </td>
+                                <td class="col-1">
+                                    <input type="text" class="form-control form-control-sm" id="gb1" name="gb1" disabled>
+                                </td>
+                                <td class="col-2">
+                                    <input type="text" class="form-control form-control-sm" id="mfee1" name="mfee1">
+                                </td>
+                                <td class="col-2">
+                                    <input type="text" class="form-control form-control-sm" id="sfee1" name="sfee1">
+                                </td>
+                                <td class="col-2">
+                                    <input type="text" class="form-control form-control-sm" id="gfee1" name="gfee1" disabled>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button id="addServiceBtn" class="btn btn-primary btn-sm">Add service</button>
+                    <hr>
+                    <button type="submit" class="btn btn-primary btn-lg">Create package</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
