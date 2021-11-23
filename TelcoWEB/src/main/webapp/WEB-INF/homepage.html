@@ -32,8 +32,9 @@
 
         <div class="card m-3" data-th-if="${packages != null}" >
             <div class="card-body" data-th-each="package : ${packages}">
+                <a class="btn btn-primary float-end" th:href="@{buypackage(id=${package.id})}" role="button">Buy</a>
                 <h3 class="card-title" data-th-text = ${package.name}> Service Package name</h3>
-                <div class="accordion-item">
+                <div class="accordion-item my-3">
                     <h2 class="accordion-header" id="serviceHeader1">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#collapseServices1" aria-expanded="false" aria-controls="collapseServices1">
