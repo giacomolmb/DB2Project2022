@@ -41,18 +41,47 @@
 
     <hr>
 
-    <div class="card m-3" >
-        <div class="card-body" >
-            <h3 class="card-title"> Optional products </h3>
-            <hr>
-            <div class="form-check" data-th-each="product : ${products}">
-                <input class="form-check-input" type="checkbox" value="" data-th-id="${'check' + product.id}">
-                <label class="form-check-label" data-th-for="${'check' + product.id}" data-th-text="${product.name} + ${product.fee}">
-                    Default checkbox
-                </label>
+    <div class="row">
+        <div class="col">
+            <div class="card m-3" >
+                <div class="card-body" >
+                    <h3 class="card-title"> Select optional products </h3>
+                    <hr>
+                    <div class="form-check" data-th-each="product : ${package.products}">
+                        <input class="form-check-input" type="checkbox" value="" data-th-id="${'check' + product.id}">
+                        <label class="form-check-label" data-th-for="${'check' + product.id}" data-th-text="${product.name}  + ' - ' + ${product.fee}  + '$'">
+                            Default checkbox
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card m-3" >
+                <div class="card-body" >
+                    <h3 class="card-title"> Select validity period </h3>
+                    <hr>
+                    <div class="form-check" data-th-each="period : ${package.packageValidityPeriods}">
+                        <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                        <label class="form-check-label" for="exampleRadios1" data-th-for="${period.months} + ' - ' ${period.fee} + '$/month'">
+                            Default radio
+                        </label>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
+
+    <div class="card m-3" >
+        <div class="card-body" >
+            <h3 class="card-title" data-th-text = "${totalPrice} +'$' > Total price: "> Total price: --$</h3>
+        </div>
+    </div>
+
+
+
+
 
 </div>
 </body>
