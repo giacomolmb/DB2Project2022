@@ -60,7 +60,7 @@ public class CreateServiceServlet extends HttpServlet {
 
         //todo validazione (sbatti)
 
-        serviceService.createService(serviceType, Integer.parseInt(minutes), Integer.parseInt(sms), Double.parseDouble(minutesFee), Double.parseDouble(smsFee), Integer.parseInt(giga), Double.parseDouble(gigaFee));
+        //serviceService.createService(serviceType, Integer.parseInt(minutes), Integer.parseInt(sms), Double.parseDouble(minutesFee), Double.parseDouble(smsFee), Integer.parseInt(giga), Double.parseDouble(gigaFee));
 
         response.sendRedirect(getServletContext().getContextPath()+"/employeehomepage");
     }

@@ -19,6 +19,14 @@ public abstract class Service {
     @JoinColumn(name="packageid")
     private ServicePackage servicePackage;
 
+    public ServicePackage getServicePackage() {
+        return servicePackage;
+    }
+
+    public void setServicePackage(ServicePackage servicePackage) {
+        this.servicePackage = servicePackage;
+    }
+
     public abstract String printService();
 
     public abstract String printExtraFees();

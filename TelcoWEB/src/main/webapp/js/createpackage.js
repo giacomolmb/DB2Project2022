@@ -49,8 +49,6 @@ function onSubmit(){
             }
         }
     }
-
-    document.getElementById("mainForm").appendChild(`<input type="hidden" name="serviceNum" value="${serviceNum}" />`);
 }
 
 function enableInputs(serviceNumber){
@@ -153,10 +151,7 @@ function addService(){
     </tr>
     `;
 
+    document.getElementById("serviceNum").value = serviceNum;
+
     rebuildServices();
 }
-
-document.getElementById("addServiceBtn").addEventListener("click", (e) => {
-    e.preventDefault();
-    addService();
-});

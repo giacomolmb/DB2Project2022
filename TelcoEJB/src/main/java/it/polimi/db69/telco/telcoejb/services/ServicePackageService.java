@@ -41,17 +41,11 @@ public class ServicePackageService {
         return servicePackage;
     }
 
-    public ServicePackage addService(int serviceId, int packageId){
-        ServicePackage servicePackage = findPackageById(packageId);
-        Service service = serviceService.findServiceById(serviceId);
-        return servicePackage;
-    }
-
     public ServicePackage addProduct (int productId, int packageId){
         ServicePackage servicePackage = findPackageById(packageId);
         Product product = productService.findProductById(productId);
 
-        ArrayList<Product> products = new ArrayList<>();
+        ArrayList<Product> products = new ArrayList<>(servicePackage.getProducts());
         products.add(product);
         servicePackage.setProducts(products);
 
