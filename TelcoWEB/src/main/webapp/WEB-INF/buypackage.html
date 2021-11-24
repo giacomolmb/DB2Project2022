@@ -45,9 +45,9 @@
         <div class="card-body" >
             <h3 class="card-title"> Optional products </h3>
             <hr>
-            <div class="form-check" data-th-each="product : ${product}">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                <label class="form-check-label" for="flexCheckDefault" data-th-text="${product.name} + ${product.fee}">
+            <div class="form-check" data-th-each="product : ${products}">
+                <input class="form-check-input" type="checkbox" value="" data-th-id="${'check' + product.id}">
+                <label class="form-check-label" data-th-for="${'check' + product.id}" data-th-text="${product.name} + ${product.fee}">
                     Default checkbox
                 </label>
             </div>
