@@ -1,11 +1,13 @@
 package it.polimi.db69.telco.telcoejb.services;
 
 import it.polimi.db69.telco.telcoejb.entities.Product;
+import it.polimi.db69.telco.telcoejb.entities.ServicePackage;
 import it.polimi.db69.telco.telcoejb.exceptions.NonUniqueException;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Collection;
 
 @Stateless
 public class ProductService {
@@ -16,6 +18,12 @@ public class ProductService {
 
     public Product findProductById(int productId){
         return em.find(Product.class, productId);
+    }
+
+    public Collection<Product> findAllProducts(){
+        if (em.createNamedQuery("product.findAll", Product.class).getResultList().isEmpty())
+            return null;
+        return em.createNamedQuery("product.findAll", Product.class).getResultList();
     }
 
     public Product createProduct(String name, double fee) throws NonUniqueException{

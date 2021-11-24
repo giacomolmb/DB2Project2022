@@ -6,7 +6,8 @@ import java.util.Collection;
 @Entity
 @Table(name="product")
 @NamedQueries({
-        @NamedQuery(name = "Product.getProductByName", query = "SELECT p FROM Product p WHERE p.name = :name")
+        @NamedQuery(name = "Product.getProductByName", query = "SELECT p FROM Product p WHERE p.name = :name"),
+        @NamedQuery(name = "product.findAll", query ="SELECT p FROM Product p")
 })
 public class Product {
     @Id
