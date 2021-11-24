@@ -1,6 +1,8 @@
 let serviceNum = 1;
+let vpNum = 1;
 
 let services = [];
+let vps = [];
 
 function onSubmit(){
     let configs = [
@@ -41,12 +43,32 @@ function onSubmit(){
         }
     
         for(let j = 0; j < 6; j++){
-            if(!configs[curConfig][j] && service.inputs[j].value == ""){
+            if(!configs[curConfig][j] && (service.inputs[j].value == "" || isNaN(service.inputs[j].value))){
                 service.inputs[j].classList.add("is-invalid");
                 return false;
             } else {
                 service.inputs[j].classList.remove("is-invalid");
             }
+        }
+    }
+
+    for(let i = 0; i < vpNum; i++){
+        let vp = {
+            months: document.getElementById("vp" + (i+1)),
+            fee: document.getElementById("vpf" + (i+1)),
+        }
+
+        if(vp.months.value == ""){
+            vp.months.classList.add("is-invalid");
+            return false;
+        } else {
+            vp.months.classList.remove("is-invalid");
+        }
+        if(vp.fee.value == ""){
+            vp.fee.classList.add("is-invalid");
+            return false;
+        } else {
+            vp.fee.classList.remove("is-invalid");
         }
     }
 }
@@ -154,4 +176,42 @@ function addService(){
     document.getElementById("serviceNum").value = serviceNum;
 
     rebuildServices();
+}
+
+function saveVps(){
+    vps = [];
+    for(let i = 0; i < vpNum; i++){
+        let vp = {
+            months: document.getElementById("vp" + (i+1)),
+            fee: document.getElementById("vpf" + (i+1))
+        }
+        vps.push(vp);
+    }
+}
+
+function rebuildVps(){
+    for(let i=0; i<vpNum; i++){
+        document.getElementById("vp" + (i+1)).value = vps[i].months.value; 
+        document.getElementById("vpf" + (i+1)).value = vps[i].fee.value;
+    }
+}
+
+function addValidityPeriod(){
+    saveVps();
+
+    vpNum++;
+    document.getElementById("vpTableBody").innerHTML += `
+    <tr>
+        <td class="col">
+            <input type="text" class="form-control form-control-sm" id="${"vp" + vpNum}" name="${"vp" + vpNum}">
+        </td>
+        <td class="col">
+            <input type="text" class="form-control form-control-sm" id="${"vpf" + vpNum}" name="${"vpf" + vpNum}">
+        </td>
+    </tr>
+    `;
+
+    document.getElementById("vpNum").value = vpNum;
+
+    rebuildVps();
 }
