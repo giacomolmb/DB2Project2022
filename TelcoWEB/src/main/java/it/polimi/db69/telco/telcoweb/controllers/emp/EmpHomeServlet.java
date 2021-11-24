@@ -33,12 +33,16 @@ public class EmpHomeServlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/html");
 
-        Employee employee = (Employee) req.getSession().getAttribute("employee");
-
         resp.setContentType("text/html");
 
         ServletContext servletContext = getServletContext();
         WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
+
+        Employee employee = (Employee) req.getSession().getAttribute("employee");
+        ctx.setVariable("errorMessage", req.getSession().getAttribute("errorMessage"));
+        req.getSession().removeAttribute("errorMessage");
+        ctx.setVariable("successMessage", req.getSession().getAttribute("successMessage"));
+        req.getSession().removeAttribute("successMessage");
 
         if(employee != null){
             ctx.setVariable("welcomeMessage", "Welcome back, " + employee.getUsername() + "!");

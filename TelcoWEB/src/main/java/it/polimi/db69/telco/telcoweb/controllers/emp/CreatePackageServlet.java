@@ -77,6 +77,10 @@ public class CreatePackageServlet extends HttpServlet {
                         serviceService.createFixedPhone(servicePackage.getId());
                         break;
                 }
+
+                request.getSession().setAttribute("successMessage", "Package successfully created!");
+                response.sendRedirect(getServletContext().getContextPath() + "/employeehomepage");
+                return;
             }
         } catch (NonUniqueException e) {
             e.printStackTrace();
