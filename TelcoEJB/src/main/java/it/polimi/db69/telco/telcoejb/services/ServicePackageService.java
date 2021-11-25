@@ -45,9 +45,9 @@ public class ServicePackageService {
         ServicePackage servicePackage = findPackageById(packageId);
         Product product = productService.findProductById(productId);
 
-        ArrayList<Product> products = new ArrayList<>(servicePackage.getProducts());
-        products.add(product);
-        servicePackage.setProducts(products);
+        if(!servicePackage.getProducts().contains(product)){
+            servicePackage.addProduct(product);
+        }
 
         return servicePackage;
     }

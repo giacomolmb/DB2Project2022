@@ -7,14 +7,13 @@ import java.util.Collection;
 @Entity
 @Table(name = "validityperiod")
 public class ValidityPeriod {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id", nullable = false)
     private int id;
 
     @Column (name = "fee", nullable = false)
-    private int fee;
+    private double fee;
 
     @Column(name = "months")
     private int months;
@@ -26,6 +25,13 @@ public class ValidityPeriod {
     @OneToMany(mappedBy = "subValidityPeriod")
     private Collection<Subscription> subscriptions;
 
+    public ValidityPeriod(){}
+
+    public ValidityPeriod(int months, double fee) {
+        this.fee = fee;
+        this.months = months;
+    }
+
     public int getId() {
         return id;
     }
@@ -34,11 +40,11 @@ public class ValidityPeriod {
         this.id = id;
     }
 
-    public int getFee() {
+    public double getFee() {
         return fee;
     }
 
-    public void setFee(int fee) {
+    public void setFee(double fee) {
         this.fee = fee;
     }
 

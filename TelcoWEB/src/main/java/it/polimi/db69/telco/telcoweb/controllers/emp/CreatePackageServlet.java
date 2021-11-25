@@ -1,9 +1,12 @@
 package it.polimi.db69.telco.telcoweb.controllers.emp;
 
+import it.polimi.db69.telco.telcoejb.entities.Product;
 import it.polimi.db69.telco.telcoejb.entities.ServicePackage;
 import it.polimi.db69.telco.telcoejb.exceptions.NonUniqueException;
+import it.polimi.db69.telco.telcoejb.services.ProductService;
 import it.polimi.db69.telco.telcoejb.services.ServicePackageService;
 import it.polimi.db69.telco.telcoejb.services.ServiceService;
+import it.polimi.db69.telco.telcoejb.services.ValidityPeriodService;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -14,6 +17,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.util.Collection;
 
 @WebServlet(name = "CreatePackageServlet", value = "/createpackage")
 public class CreatePackageServlet extends HttpServlet {
@@ -22,6 +26,12 @@ public class CreatePackageServlet extends HttpServlet {
 
     @EJB(name = "it.polimi.db69.telco.telcoejb.services/ServicePackageService")
     ServicePackageService packageService;
+
+    @EJB(name = "it.polimi.db69.telco.telcoejb.services/ProductService")
+    private ProductService productService;
+
+    @EJB(name = "it.polimi.db69.telco.telcoejb.services/ValidityPeriodService")
+    private ValidityPeriodService vpService;
 
     TemplateEngine templateEngine;
 
@@ -42,6 +52,9 @@ public class CreatePackageServlet extends HttpServlet {
         ServletContext servletContext = getServletContext();
         WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
         String path = "/WEB-INF/employee/createpackage.html";
+
+        Collection<Product> products = productService.findAllProducts();
+        ctx.setVariable("products", products);
 
         templateEngine.process(path, ctx, response.getWriter());
     }
@@ -78,10 +91,22 @@ public class CreatePackageServlet extends HttpServlet {
                         break;
                 }
 
-                request.getSession().setAttribute("successMessage", "Package successfully created!");
-                response.sendRedirect(getServletContext().getContextPath() + "/employeehomepage");
-                return;
             }
+
+            for(int i = 0; i < Integer.parseInt(request.getParameter("vpNum")); i++) {
+                int vpMonths = Integer.parseInt(request.getParameter("vp" + (i + 1)));
+                double vpFee = Double.parseDouble(request.getParameter("vpf" + (i + 1)));
+                vpService.createValidityPeriod(vpMonths, vpFee, servicePackage.getId());
+            }
+
+            if(request.getParameter("optionalProducts") != null){
+                for(String optProd : request.getParameterValues("optionalProducts")){
+                    packageService.addProduct(Integer.parseInt(optProd), servicePackage.getId());
+                }
+            }
+
+            request.getSession().setAttribute("successMessage", "Package successfully created!");
+            response.sendRedirect(getServletContext().getContextPath() + "/employeehomepage");
         } catch (NonUniqueException e) {
             e.printStackTrace();
         }

@@ -27,10 +27,10 @@ public class ServicePackage {
     private Collection<Service> services;
 
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="packageproduct",
-            joinColumns=@JoinColumn(name="productid"),
-            inverseJoinColumns=@JoinColumn(name="packageid"))
+            joinColumns=@JoinColumn(name="packageid"),
+            inverseJoinColumns=@JoinColumn(name="productid"))
     private Collection<Product> products;
 
 
@@ -63,6 +63,11 @@ public class ServicePackage {
 
     public void setProducts(Collection<Product> products) {
         this.products = products;
+    }
+
+    public void addProduct(Product product){
+        this.getProducts().add(product);
+        product.getPackages().add(this);
     }
 
     public Collection<Service> getServices() {
