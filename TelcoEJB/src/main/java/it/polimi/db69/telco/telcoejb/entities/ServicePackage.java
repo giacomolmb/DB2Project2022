@@ -57,6 +57,14 @@ public class ServicePackage {
         this.name = name;
     }
 
+    public Collection<ValidityPeriod> getPackageValidityPeriods() {
+        return packageValidityPeriods;
+    }
+
+    public void setPackageValidityPeriods(Collection<ValidityPeriod> packageValidityPeriods) {
+        this.packageValidityPeriods = packageValidityPeriods;
+    }
+
     public Collection<Product> getProducts() {
         return products;
     }
