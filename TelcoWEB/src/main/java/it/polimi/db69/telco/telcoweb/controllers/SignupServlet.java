@@ -29,6 +29,8 @@ public class SignupServlet extends HttpServlet {
     @EJB(name = "it.polimi.db69.telco.telcoejb.services/UserService")
     private UserService userService;
 
+    private String path = "/WEB-INF/index.html";
+
     @Override
     public void init() {
         ServletContext servletContext = getServletContext();
@@ -45,8 +47,9 @@ public class SignupServlet extends HttpServlet {
 
         ServletContext servletContext = getServletContext();
         WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
+        path = "/WEB-INF/register.html";
 
-        templateEngine.process("/WEB-INF/index.html", ctx, resp.getWriter());
+        templateEngine.process(path, ctx, resp.getWriter());
     }
 
     @Override
@@ -65,7 +68,7 @@ public class SignupServlet extends HttpServlet {
             final WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
             ctx.setVariable("signupErrorMessage", e.getMessage());
 
-            templateEngine.process("/WEB-INF/index.html", ctx, resp.getWriter());
+            templateEngine.process(path, ctx, resp.getWriter());
             return;
         }
 
