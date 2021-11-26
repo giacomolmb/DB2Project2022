@@ -41,7 +41,7 @@
 
     <hr>
 
-    <form name="mainForm" id="mainForm" onsubmit="return onSubmit()" data-th-action="@{'/confirmationpage'}" method="post">
+    <form name="mainForm" id="mainForm" onsubmit="return onSubmit()" data-th-action="@{'/confirmation'}" method="post">
     <div class="row">
         <div class="col">
             <div class="card m-3" >
@@ -55,7 +55,7 @@
                         </label>
                     </div>
                 </div>
-                <div class="card-body" data-th-if="${package.products} = null">
+                <div class="card-body" data-th-if="${package.products} == null">
                     <h3 class="card-title" > Optional products not available for this package</h3>
                 </div>
             </div>
