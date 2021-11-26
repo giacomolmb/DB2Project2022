@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `telco_db` /*!40100 DEFAULT CHARACTER SET utf8 */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `telco_db`;
--- MySQL dump 10.13  Distrib 8.0.27, for macos11 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.26, for macos11 (x86_64)
 --
 -- Host: localhost    Database: telco_db
 -- ------------------------------------------------------
--- Server version	8.0.27
+-- Server version	8.0.26
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -108,8 +108,11 @@ CREATE TABLE `order` (
   `datetime` datetime NOT NULL,
   `status` varchar(45) NOT NULL DEFAULT 'PENDING',
   `userid` int DEFAULT NULL,
+  `subscriptionId` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `order_userid_idx` (`userid`),
+  KEY `order_subscriptionid_idx` (`subscriptionId`),
+  CONSTRAINT `order_subscriptionid` FOREIGN KEY (`subscriptionId`) REFERENCES `subscription` (`id`),
   CONSTRAINT `order_userid` FOREIGN KEY (`userid`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -242,12 +245,9 @@ DROP TABLE IF EXISTS `subscription`;
 CREATE TABLE `subscription` (
   `id` int NOT NULL AUTO_INCREMENT,
   `vpid` int NOT NULL,
-  `orderid` int NOT NULL,
   `startdate` date NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `subscription_orderid_idx` (`orderid`),
   KEY `subscription_vpid_idx` (`vpid`),
-  CONSTRAINT `subscription_orderid` FOREIGN KEY (`orderid`) REFERENCES `order` (`id`),
   CONSTRAINT `subscription_vpid` FOREIGN KEY (`vpid`) REFERENCES `validityperiod` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -353,4 +353,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-11-25 18:01:15
+-- Dump completed on 2021-11-26 18:59:11
