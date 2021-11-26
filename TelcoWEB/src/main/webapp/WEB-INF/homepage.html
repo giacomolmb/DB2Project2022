@@ -41,7 +41,7 @@
                     <h5>Services</h5>
                     <ul class="list-group list-group-flush" >
                         <li class="list-group-item" data-th-each="service : ${package.services}">
-                            <span data-th-text="${service.printService()} + ' - ' + ${service.printExtraFees()}">boh</span>
+                            <span data-th-text="${service.printService()} + ' - ' + ${service.printExtraFees()}"> Service with extra fee</span>
                         </li>
                     </ul>
                 </div>

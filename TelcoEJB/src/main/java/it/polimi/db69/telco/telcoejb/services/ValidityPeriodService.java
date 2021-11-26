@@ -17,6 +17,10 @@ public class ValidityPeriodService {
     @EJB(name = "it.polimi.db69.telco.telcoejb.services/ServicePackageService")
     private ServicePackageService packageService;
 
+    public ValidityPeriod findById(int validityPeriodId){
+        return em.find(ValidityPeriod.class, validityPeriodId);
+    }
+
     public ValidityPeriod createValidityPeriod(int months, double fee, int packageId){
         ValidityPeriod vp = new ValidityPeriod(months, fee);
         vp.setVpPackage(packageService.findPackageById(packageId));

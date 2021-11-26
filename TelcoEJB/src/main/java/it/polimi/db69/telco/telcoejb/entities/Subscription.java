@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Date;
 
 @Entity
 @Table(name = "subscription")
@@ -13,20 +14,13 @@ public class Subscription {
     private int id;
 
     @Column (name = "startdate", nullable = false)
-    private Timestamp startDate;
-
-    @Column(name="vpid", nullable = false, insertable=false, updatable=false)
-    private int vpId;
-
-    @Column(name="orderid", nullable = false, insertable=false, updatable=false)
-    private int orderId;
+    private Date startDate;
 
     @ManyToOne
     @JoinColumn(name = "vpid")
     private ValidityPeriod subValidityPeriod;
 
-    @OneToOne
-    @JoinColumn(name = "orderid")
+    @OneToOne(mappedBy = "orderSubscription")
     private Order subOrder;
 
     @ManyToMany
@@ -34,6 +28,14 @@ public class Subscription {
             joinColumns=@JoinColumn(name = "subscriptionid"),
             inverseJoinColumns=@JoinColumn(name="productid"))
     private Collection<Product> subscriptionProducts;
+
+    public Subscription() {
+    }
+
+    public Subscription(Date startDate, ValidityPeriod subValidityPeriod) {
+        this.startDate = startDate;
+        this.subValidityPeriod = subValidityPeriod;
+    }
 
     public int getId() {
         return id;
@@ -43,11 +45,11 @@ public class Subscription {
         this.id = id;
     }
 
-    public Timestamp getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Timestamp startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
@@ -59,11 +61,17 @@ public class Subscription {
         this.subValidityPeriod = subValidityPeriod;
     }
 
-    public Order getSubOrder() {
-        return subOrder;
+    public Collection<Product> getSubscriptionProducts() {
+        return subscriptionProducts;
     }
 
-    public void setSubOrder(Order subOrder) {
-        this.subOrder = subOrder;
+    public void setSubscriptionProducts(Collection<Product> subscriptionProducts) {
+        this.subscriptionProducts = subscriptionProducts;
     }
+
+    public void addProduct(Product product){
+        this.getSubscriptionProducts().add(product);
+        product.getProductSubscriptions().add(this);
+    }
+
 }

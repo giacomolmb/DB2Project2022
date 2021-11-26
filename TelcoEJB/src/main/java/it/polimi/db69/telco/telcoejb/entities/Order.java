@@ -19,12 +19,13 @@ public class Order{
     @Column (name = "status", nullable = false, length = 45)
     private OrderStatus status;
 
+    @OneToOne
+    @JoinColumn(name = "subscriptionid")
+    private Subscription orderSubscription;
+
     @ManyToOne
     @JoinColumn(name = "userid")
     private User orderUser;
-
-    @OneToOne(mappedBy = "subOrder")
-    private Subscription orderSubscription;
 
     public Order() {
     }

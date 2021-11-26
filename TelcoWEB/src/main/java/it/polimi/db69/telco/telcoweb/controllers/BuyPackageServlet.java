@@ -2,9 +2,11 @@ package it.polimi.db69.telco.telcoweb.controllers;
 
 import it.polimi.db69.telco.telcoejb.entities.Product;
 import it.polimi.db69.telco.telcoejb.entities.ServicePackage;
+import it.polimi.db69.telco.telcoejb.entities.Subscription;
 import it.polimi.db69.telco.telcoejb.entities.User;
 import it.polimi.db69.telco.telcoejb.services.ProductService;
 import it.polimi.db69.telco.telcoejb.services.ServicePackageService;
+import it.polimi.db69.telco.telcoejb.services.SubscriptionService;
 import it.polimi.db69.telco.telcoejb.services.UserService;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -17,6 +19,9 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 
 @WebServlet(name = "BuyPackageServlet", value = "/buypackage")
@@ -28,6 +33,9 @@ public class BuyPackageServlet extends HttpServlet {
 
     @EJB(name = "it.polimi.db69.telco.telcoejb.services/ServicePackageService")
     private ServicePackageService packageService;
+
+    @EJB(name = "it.polimi.db69.telco.telcoejb.services/SubscriptionService")
+    private SubscriptionService subscriptionService;
 
     @Override
     public void init() throws ServletException {
@@ -53,14 +61,27 @@ public class BuyPackageServlet extends HttpServlet {
         Collection<Product> products = productService.findAllProducts();
 
         ctx.setVariable("package", selectedPackage);
-        ctx.setVariable("products", products);
-
 
         templateEngine.process(path, ctx, response.getWriter());
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            SimpleDateFormat parser = new SimpleDateFormat("dd/mm/yyyy");
+            Date startDate = parser.parse(request.getParameter("startDate"));
 
+            int validityPeriod = Integer.parseInt(request.getParameter("vp"));
+
+        Subscription subscription = subscriptionService.createSubscription((java.sql.Date) startDate, validityPeriod);
+
+        if(request.getParameter("optionalProducts") != null){
+            for(String optProd : request.getParameterValues("optionalProducts")){
+                subscriptionService.addProductToSubscription(Integer.parseInt(optProd), subscription.getId());
+            }
+        }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 }

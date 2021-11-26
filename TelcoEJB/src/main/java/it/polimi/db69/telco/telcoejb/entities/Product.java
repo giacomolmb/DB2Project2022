@@ -66,4 +66,12 @@ public class Product {
     public void setPackages(Collection<ServicePackage> servicePackages) {
         this.servicePackages = servicePackages;
     }
+
+    public Collection<Subscription> getProductSubscriptions() {
+        return productSubscriptions;
+    }
+
+    public void setProductSubscriptions(Collection<Subscription> productSubscriptions) {
+        this.productSubscriptions = productSubscriptions;
+    }
 }

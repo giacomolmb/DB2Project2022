@@ -12,7 +12,7 @@
 <body>
 <div class="container">
     <br>
-    <h1>Buy package</h1>
+    <h1>Confirm order</h1>
 
     <hr>
 
@@ -41,7 +41,6 @@
 
     <hr>
 
-    <form name="mainForm" id="mainForm" onsubmit="return onSubmit()" data-th-action="@{'/confirmationpage'}" method="post">
     <div class="row">
         <div class="col">
             <div class="card m-3" >
@@ -49,13 +48,13 @@
                     <h3 class="card-title" > Select optional products </h3>
                     <hr>
                     <div class="form-check" data-th-each="product : ${package.products}">
-                        <input class="form-check-input" type="checkbox" value="optionalProduct" data-th-id="${'check' + product.id}">
+                        <input class="form-check-input" type="checkbox" value="" data-th-id="${'check' + product.id}">
                         <label class="form-check-label" data-th-for="${'check' + product.id}" data-th-text="${product.name}  + ' - ' + ${product.fee}  + '$'">
                             Default checkbox
                         </label>
                     </div>
                 </div>
-                <div class="card-body" data-th-if="${package.products} = null">
+                <div class="card-body" data-th-if="${package.products} == null">
                     <h3 class="card-title" > Optional products not available for this package</h3>
                 </div>
             </div>
@@ -66,33 +65,15 @@
                     <h3 class="card-title"> Select validity period </h3>
                     <hr>
                     <div class="form-check" data-th-each="period : ${package.packageValidityPeriods}">
-                        <input class="form-check-input" type="radio" name="exampleRadios" id="vp" value="checked" checked>
-                        <label class="form-check-label" for="vp" data-th-text="${period.months} + ' - ' + ${period.fee} + '$/month'">
-                            months with fee
+                        <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                        <label class="form-check-label" for="exampleRadios1" data-th-text="${period.months} + ' - ' + ${period.fee} + '$/month'">
+                            Default radio
                         </label>
                     </div>
                 </div>
             </div>
-
         </div>
-
-        <div class="card m-3">
-        <div class="row m-3">
-            <label for="startDate" class="col-sm-2 col-form-label">Select start date:</label>
-            <div class="col-sm-10">
-                <input type="date" class="form-control" id="startDate" name="startDate"/>
-            </div>
-
-
-        </div>
-        <button type="submit" class="btn btn-primary float-end">Buy</button>
-        </div>
-
-
     </div>
-    </form>
-
-
 
 </div>
 </body>
