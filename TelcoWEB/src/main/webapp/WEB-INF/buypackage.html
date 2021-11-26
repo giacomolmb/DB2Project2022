@@ -12,7 +12,7 @@
 <body>
 <div class="container">
     <br>
-    <h1>Confirm order</h1>
+    <h1>Buy package</h1>
 
     <hr>
 
@@ -30,7 +30,7 @@
                     <div class="accordion-body">
                         <ul class="list-group list-group-flush" >
                             <li class="list-group-item" data-th-each="service : ${package.services}">
-                                <span data-th-text="${service.printService()} +  ${service.printExtraFees()}">service</span>
+                                <span data-th-text="${service.printService()} + ' - ' +  ${service.printExtraFees()}">service</span>
                             </li>
                         </ul>
                     </div>
@@ -44,8 +44,8 @@
     <div class="row">
         <div class="col">
             <div class="card m-3" >
-                <div class="card-body" >
-                    <h3 class="card-title"> Select optional products </h3>
+                <div class="card-body" data-th-if="${package.products} != null">
+                    <h3 class="card-title" > Select optional products </h3>
                     <hr>
                     <div class="form-check" data-th-each="product : ${package.products}">
                         <input class="form-check-input" type="checkbox" value="" data-th-id="${'check' + product.id}">
@@ -53,6 +53,9 @@
                             Default checkbox
                         </label>
                     </div>
+                </div>
+                <div class="card-body" data-th-if="${package.products} == null">
+                    <h3 class="card-title" > Optional products not available for this package</h3>
                 </div>
             </div>
         </div>
@@ -63,7 +66,7 @@
                     <hr>
                     <div class="form-check" data-th-each="period : ${package.packageValidityPeriods}">
                         <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                        <label class="form-check-label" for="exampleRadios1" data-th-for="${period.months} + ' - ' ${period.fee} + '$/month'">
+                        <label class="form-check-label" for="exampleRadios1" data-th-text="${period.months} + ' - ' + ${period.fee} + '$/month'">
                             Default radio
                         </label>
                     </div>
@@ -72,16 +75,7 @@
         </div>
     </div>
 
-
-    <div class="card m-3" >
-        <div class="card-body" >
-            <h3 class="card-title" data-th-text = "${totalPrice} +'$' > Total price: "> Total price: --$</h3>
-        </div>
-    </div>
-
-
-
-
+    <a class="btn btn-primary float-end" th:href="@{confirmationpage(package=${package.id}, )}" role="button">Buy</a>
 
 </div>
 </body>
