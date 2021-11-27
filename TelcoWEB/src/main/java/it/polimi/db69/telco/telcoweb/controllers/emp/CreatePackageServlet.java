@@ -21,6 +21,8 @@ import java.util.Collection;
 
 @WebServlet(name = "CreatePackageServlet", value = "/createpackage")
 public class CreatePackageServlet extends HttpServlet {
+    private String path = "/WEB-INF/employee/emphomepage.html";
+
     @EJB(name = "it.polimi.db69.telco.telcoejb.services/ServiceService")
     ServiceService serviceService;
 
@@ -51,7 +53,7 @@ public class CreatePackageServlet extends HttpServlet {
 
         ServletContext servletContext = getServletContext();
         WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-        String path = "/WEB-INF/employee/createpackage.html";
+        path = "/WEB-INF/employee/createpackage.html";
 
         Collection<Product> products = productService.findAllProducts();
         ctx.setVariable("products", products);

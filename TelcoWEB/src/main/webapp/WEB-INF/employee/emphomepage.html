@@ -6,14 +6,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    <style>
+        .list-group{
+            max-height: 250px;
+            margin-bottom: 10px;
+            overflow:scroll;
+            -webkit-overflow-scrolling: touch;
+        }
+    </style>
+    <script defer src="../../js/createpackage.js" data-th-src="@{/js/createpackage.js}"></script>
+    <script defer src="../../js/createproduct.js" data-th-src="@{/js/createproduct.js}"></script>
     <title>Employee Homepage</title>
 </head>
 
 <body>
 <div class="container">
     <br>
-    <h1>Telco Employee Homepage</h1>
-    <h3 data-th-text=${welcomeMessage}>Welcome back!</h3>
+    <div class="row">
+        <div class="col">
+            <h1>Telco Employee Homepage</h1>
+            <h3 data-th-text=${welcomeMessage}>Welcome back!</h3>
+        </div>
+        <div class="col">
+            <br>
+            <a class="btn btn-primary btn-lg float-end" th:href="@{salesreport}" disabled role="button">View Sales Report</a>
+        </div>
+    </div>
     <hr>
     <div data-th-if=${errorMessage!=null} class="alert alert-danger" role="alert" data-th-text="${errorMessage}">
         Error
@@ -21,11 +39,138 @@
     <div data-th-if=${successMessage!=null} class="alert alert-success" role="alert" data-th-text="${successMessage}">
         Success
     </div>
-    <a class="btn btn-primary btn-lg" href="createproduct" role="button">Create product</a>
-    <a class="btn btn-primary btn-lg" href="createpackage" role="button">Create Service Package</a>
-    <a class="btn btn-primary btn-lg" href="createservice" disabled role="button">View service packages</a>
+    <h2>Create Package</h2>
+    <div class="card mx-auto">
+        <div class="card-body">
+            <form name="mainForm" id="mainForm" onsubmit="return onSubmit()" data-th-action="@{'/createpackage'}" method="post">
+                <div class="mb-3">
+                    <label for="packageName" class="form-label"><h3>Service Package name</h3></label>
+                    <input type="text" class="form-control" id="packageName" name="packageName">
+                </div>
+                <hr>
+                <h5>Package services</h5>
+                <input type="hidden" name="serviceNum" id="serviceNum" value="1" />
+                <table class="table table-striped">
+                    <thead>
+                    <tr class="d-flex">
+                        <th class="col-3" scope="col">Type</th>
+                        <th class="col-1" scope="col">#Minutes</th>
+                        <th class="col-1" scope="col">#SMSs</th>
+                        <th class="col-1" scope="col">#GBs</th>
+                        <th class="col-2" scope="col">Extra min. fee</th>
+                        <th class="col-2" scope="col">Extra SMS fee</th>
+                        <th class="col-2" scope="col">Extra GB fee</th>
+                    </tr>
+                    </thead>
+                    <tbody id="serviceTableBody">
+                    <tr class="d-flex">
+                        <td class="col-3">
+                            <select onchange="enableInputs(1)" class="form-select form-select-sm" id="type1" name="type1">
+                                <option value="mobilephone">Mobile phone</option>
+                                <option value="fixedphone">Fixed phone</option>
+                                <option value="mobileinternet">Mobile internet</option>
+                                <option value="fixedinternet">Fixed internet</option>
+                            </select>
+                        </td>
+                        <td class="col-1">
+                            <input type="text" class="form-control form-control-sm" id="min1" name="min1">
+                        </td>
+                        <td class="col-1">
+                            <input type="text" class="form-control form-control-sm" id="sms1" name="sms1">
+                        </td>
+                        <td class="col-1">
+                            <input type="text" class="form-control form-control-sm" id="gb1" name="gb1" disabled>
+                        </td>
+                        <td class="col-2">
+                            <input type="text" class="form-control form-control-sm" id="mfee1" name="mfee1">
+                        </td>
+                        <td class="col-2">
+                            <input type="text" class="form-control form-control-sm" id="sfee1" name="sfee1">
+                        </td>
+                        <td class="col-2">
+                            <input type="text" class="form-control form-control-sm" id="gfee1" name="gfee1" disabled>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <button type="button" onclick="addService()" id="addServiceBtn" class="btn btn-primary btn-sm">Add service</button>
+                <hr>
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Optional products</h5>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item" data-th-each="product : ${products}">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" data-th-value="${product.id}" data-th-id="${'check' + product.id}" name="optionalProducts">
+                                            <label class="form-check-label" data-th-for="${'check' + product.id}" data-th-text="${product.name}">
+                                                Default checkbox
+                                            </label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Validity periods</h5>
+                                <input type="hidden" name="vpNum" id="vpNum" value="1" />
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th class="col" scope="col">Months</th>
+                                        <th class="col" scope="col">Monthly Fee</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="vpTableBody">
+                                    <tr>
+                                        <td class="col">
+                                            <input type="text" class="form-control form-control-sm" id="vp1" name="vp1">
+                                        </td>
+                                        <td class="col">
+                                            <input type="text" class="form-control form-control-sm" id="vpf1" name="vpf1">
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <button type="button" onclick="addValidityPeriod()" id="addVpBtn" class="btn btn-primary btn-sm">Add validity period</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+                <button type="submit" class="btn btn-primary btn-lg">Create package</button>
+            </form>
+        </div>
+    </div>
     <hr>
-    
+    <h2>Create Optional Product</h2>
+    <form method="post" data-th-action="@{'/createproduct'}" class="row align-items-center" onsubmit="return onProductSubmit()">
+        <div class="col">
+            <label class="visually-hidden" for="productName">Product name</label>
+            <div class="input-group input-group-lg">
+                <input type="text" class="form-control" id="productName" name="productName" placeholder="Product name">
+            </div>
+        </div>
+
+        <div class="col">
+            <label class="visually-hidden" for="productMonthlyFee">Monthly Fee</label>
+            <div class="input-group input-group-lg">
+                <input type="text" class="form-control" id="productMonthlyFee" name="productFee" placeholder="Monthly fee">
+                <div class="input-group-text">$</div>
+            </div>
+        </div>
+
+        <div class="col">
+            <button type="submit" class="btn btn-lg btn-primary">Create product</button>
+        </div>
+    </form>
+    <hr>
+    <br>
 </div>
 </body>
 </html>

@@ -21,6 +21,8 @@ import java.io.IOException;
 public class CreateProductServlet extends HttpServlet {
     TemplateEngine templateEngine;
 
+    private String path = "/WEB-INF/employee/emphomepage.html";
+
     @EJB(name = "it.polimi.db69.telco.telcoejb.services/ProductService")
     ProductService productService;
 
@@ -39,7 +41,7 @@ public class CreateProductServlet extends HttpServlet {
 
         ServletContext servletContext = getServletContext();
         WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
-        String path = "/WEB-INF/employee/createproduct.html";
+        path = "/WEB-INF/employee/createproduct.html";
 
         templateEngine.process(path, ctx, resp.getWriter());
     }
@@ -60,11 +62,12 @@ public class CreateProductServlet extends HttpServlet {
             final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
             ctx.setVariable("errorMessage", e.getMessage());
 
-            templateEngine.process("/WEB-INF/employee/createproduct.html", ctx, response.getWriter());
+            templateEngine.process(path, ctx, response.getWriter());
             return;
         }
 
-        response.sendRedirect(getServletContext().getContextPath()+"/employeehomepage");
+        request.getSession().setAttribute("successMessage", "Product successfully created!");
+        response.sendRedirect(getServletContext().getContextPath() + "/employeehomepage");
     }
 
     private void checkInputs(String productName, String fee) throws InputException{
