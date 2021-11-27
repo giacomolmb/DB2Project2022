@@ -27,6 +27,6 @@ public class FixedInternet extends Service{
 
     @Override
     public String printExtraFees() {
-        return gigafee + " for each extra GB";
+        return String.format("%.2f", gigafee) + "$ for each extra GB";
     }
 }
