@@ -74,4 +74,18 @@ public class Subscription {
         product.getProductSubscriptions().add(this);
     }
 
+    public String calculateTotalPrice(){
+        String totalPrice;
+        double price = subValidityPeriod.getFee()* subValidityPeriod.getMonths();
+        if (subscriptionProducts != null) {
+            for (Product product : subscriptionProducts) {
+                price += product.getFee() * subValidityPeriod.getMonths();
+            }
+        }
+        totalPrice = "Total price: " + price + "$";
+        return totalPrice;
+    }
+
+    //todo start date - expiration date
+
 }
