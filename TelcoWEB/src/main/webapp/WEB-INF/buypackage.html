@@ -41,7 +41,7 @@
 
     <hr>
 
-    <form name="mainForm" id="mainForm" onsubmit="return onSubmit()" data-th-action="@{'/confirmation'}" method="post">
+    <form name="mainForm" id="mainForm" onsubmit="return onSubmit()" data-th-action="@{'/buypackage'}" method="post">
     <div class="row">
         <div class="col">
             <div class="card m-3" >
@@ -66,7 +66,7 @@
                     <h3 class="card-title"> Select validity period </h3>
                     <hr>
                     <div class="form-check" data-th-each="period : ${package.packageValidityPeriods}">
-                        <input class="form-check-input" type="radio" name="exampleRadios" id="vp" value="checked" checked>
+                        <input class="form-check-input" type="radio" name="vp" id="vp" data-th-value="${period.id}" checked>
                         <label class="form-check-label" for="vp" data-th-text="${period.months} + ' - ' + ${period.fee} + '$/month'">
                             months with fee
                         </label>

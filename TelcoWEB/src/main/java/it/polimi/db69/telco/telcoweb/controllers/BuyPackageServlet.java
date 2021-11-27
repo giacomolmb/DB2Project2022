@@ -19,7 +19,8 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
+
+import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -67,19 +68,25 @@ public class BuyPackageServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        java.util.Date startDate;
         try {
-            SimpleDateFormat parser = new SimpleDateFormat("dd/mm/yyyy");
-            Date startDate = parser.parse(request.getParameter("startDate"));
+            startDate = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("startDate"));
+            Date startSQLDate =  new java.sql.Date(startDate.getTime());
 
             int validityPeriod = Integer.parseInt(request.getParameter("vp"));
 
-        Subscription subscription = subscriptionService.createSubscription((java.sql.Date) startDate, validityPeriod);
+            Subscription subscription = subscriptionService.createSubscription(startSQLDate, validityPeriod);
 
-        if(request.getParameter("optionalProducts") != null){
-            for(String optProd : request.getParameterValues("optionalProducts")){
-                subscriptionService.addProductToSubscription(Integer.parseInt(optProd), subscription.getId());
+            if(request.getParameter("optionalProducts") != null){
+                for(String optProd : request.getParameterValues("optionalProducts")){
+                    subscriptionService.addProductToSubscription(Integer.parseInt(optProd), subscription.getId());
+                }
             }
-        }
+
+            request.getSession().setAttribute("subscription",subscription);
+
+            response.sendRedirect(getServletContext().getContextPath() + "/confirmation");
+
         } catch (ParseException e) {
             e.printStackTrace();
         }

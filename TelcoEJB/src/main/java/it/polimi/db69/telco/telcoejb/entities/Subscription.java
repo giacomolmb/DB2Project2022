@@ -2,9 +2,9 @@ package it.polimi.db69.telco.telcoejb.entities;
 
 import javax.persistence.*;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Date;
+import java.sql.Date;
 
 @Entity
 @Table(name = "subscription")
