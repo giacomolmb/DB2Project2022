@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `telco_db` /*!40100 DEFAULT CHARACTER SET utf8 */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `telco_db`;
--- MySQL dump 10.13  Distrib 8.0.26, for macos11 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.27, for macos11 (x86_64)
 --
 -- Host: localhost    Database: telco_db
 -- ------------------------------------------------------
--- Server version	8.0.26
+-- Server version	8.0.27
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -178,6 +178,20 @@ INSERT INTO `packageproduct` VALUES (29,106),(30,106),(30,107),(29,108);
 UNLOCK TABLES;
 
 --
+-- Temporary view structure for view `packagepurchase`
+--
+
+DROP TABLE IF EXISTS `packagepurchase`;
+/*!50001 DROP VIEW IF EXISTS `packagepurchase`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `packagepurchase` AS SELECT 
+ 1 AS `packageid`,
+ 1 AS `vpid`,
+ 1 AS `orderid`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Table structure for table `product`
 --
 
@@ -189,7 +203,7 @@ CREATE TABLE `product` (
   `name` varchar(45) NOT NULL,
   `fee` double NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=110 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -198,9 +212,26 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (106,'iPhone 13',30),(107,'Apple Watch 6',10),(108,'Bettina\'s Water Bottle',25),(109,'Apple Pencil',4);
+INSERT INTO `product` VALUES (106,'iPhone 13',30),(107,'Apple Watch 6',10),(108,'Bettina\'s Water Bottle',25),(109,'Apple Pencil',4),(110,'Vodafone Wi-Fi Station',25),(111,'Samsung Smart TV',20),(112,'Bose SoundLink',5),(113,'AirPods',5),(114,'AirPods Pro',8);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Temporary view structure for view `sales_report`
+--
+
+DROP TABLE IF EXISTS `sales_report`;
+/*!50001 DROP VIEW IF EXISTS `sales_report`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `sales_report` AS SELECT 
+ 1 AS `packageid`,
+ 1 AS `vpid`,
+ 1 AS `orderid`,
+ 1 AS `basic_value`,
+ 1 AS `total_value`,
+ 1 AS `num_of_products`*/;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `service`
@@ -343,6 +374,42 @@ LOCK TABLES `validityperiod` WRITE;
 INSERT INTO `validityperiod` VALUES (16,29,12,10),(17,29,24,8),(18,30,12,8),(19,30,24,7),(20,30,36,5);
 /*!40000 ALTER TABLE `validityperiod` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Final view structure for view `packagepurchase`
+--
+
+/*!50001 DROP VIEW IF EXISTS `packagepurchase`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `packagepurchase` (`packageid`,`vpid`,`orderid`) AS select `V`.`packageid` AS `packageid`,`V`.`id` AS `id`,`O`.`id` AS `id` from ((`validityperiod` `V` join `subscription` `S`) join `order` `O`) where ((`V`.`id` = `S`.`vpid`) and (`S`.`id` = `O`.`subscriptionId`) and (`O`.`status` = 'ACCEPTED')) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `sales_report`
+--
+
+/*!50001 DROP VIEW IF EXISTS `sales_report`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `sales_report` (`packageid`,`vpid`,`orderid`,`basic_value`,`total_value`,`num_of_products`) AS select `V`.`packageid` AS `packageid`,`V`.`id` AS `id`,`O`.`id` AS `id`,(`V`.`fee` * `V`.`months`) AS `V.fee*V.months`,((`V`.`fee` * `V`.`months`) + (`V`.`months` * sum(`P`.`fee`))) AS `(V.fee*V.months)+(V.months*SUM(P.fee))`,count(`P`.`fee`) AS `COUNT(P.fee)` from ((((`validityperiod` `V` join `subscription` `S`) join `order` `O`) join `subscriptionproduct` `SP`) join `product` `P`) where ((`V`.`id` = `S`.`vpid`) and (`S`.`id` = `O`.`subscriptionId`) and (`S`.`id` = `SP`.`subscriptionid`) and (`P`.`id` = `SP`.`productid`) and (`O`.`status` = 'ACCEPTED')) group by `V`.`packageid`,`V`.`id`,`O`.`id`,`V`.`fee`,`V`.`months` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -353,4 +420,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-11-26 18:59:11
+-- Dump completed on 2021-11-27 15:14:46
