@@ -53,6 +53,7 @@ public class ConfirmationServlet extends HttpServlet {
         String path = "/WEB-INF/confirmationpage.html";
 
         int subscriptionId = ((Subscription) request.getSession().getAttribute("subscription")).getId();
+        request.getSession().removeAttribute("subscription");
 
         Subscription subscription = subscriptionService.findById(subscriptionId);
 
