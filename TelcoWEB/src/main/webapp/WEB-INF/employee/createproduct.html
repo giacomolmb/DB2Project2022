@@ -16,7 +16,7 @@
                 <div data-th-if=${errorMessage!=null} class="alert alert-danger" role="alert" data-th-text="${errorMessage}">
                     Error
                 </div>
-                <form method="post" data-th-action="@{'/createproduct'}">
+                <form method="post" data-th-action="@{'/employee/createproduct'}">
                     <div class="mb-3">
                         <label for="productName" class="form-label">Product name</label>
                         <input type="text" class="form-control" id="productName" name="productName">

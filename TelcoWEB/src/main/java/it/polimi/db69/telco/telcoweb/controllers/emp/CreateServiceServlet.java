@@ -18,7 +18,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 
-@WebServlet(name = "CreateServiceServlet", value = "/createservice")
+@WebServlet(name = "CreateServiceServlet", value = "/employee/createservice")
 public class CreateServiceServlet extends HttpServlet {
     TemplateEngine templateEngine;
 
@@ -62,7 +62,7 @@ public class CreateServiceServlet extends HttpServlet {
 
         //serviceService.createService(serviceType, Integer.parseInt(minutes), Integer.parseInt(sms), Double.parseDouble(minutesFee), Double.parseDouble(smsFee), Integer.parseInt(giga), Double.parseDouble(gigaFee));
 
-        response.sendRedirect(getServletContext().getContextPath()+"/employeehomepage");
+        response.sendRedirect(getServletContext().getContextPath()+"/employee/homepage");
     }
 
     private void checkInputs(String productName, String fee) throws InputException{

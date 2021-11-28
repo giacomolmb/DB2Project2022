@@ -15,7 +15,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 
-@WebServlet(name = "EmpLoginServlet", value = "/employeelogin")
+@WebServlet(name = "EmpLoginServlet", value = "/employee/login")
 public class EmpLoginServlet extends HttpServlet {
     TemplateEngine templateEngine;
 
@@ -87,7 +87,7 @@ public class EmpLoginServlet extends HttpServlet {
             */
 
             request.getSession().setAttribute("employee", employee);
-            response.sendRedirect(getServletContext().getContextPath() + "/employeehomepage");
+            response.sendRedirect(getServletContext().getContextPath() + "/employee/homepage");
         }
     }
 

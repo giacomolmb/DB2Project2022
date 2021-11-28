@@ -17,7 +17,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 
-@WebServlet(name = "CreateProductServlet", value = "/createproduct")
+@WebServlet(name = "CreateProductServlet", value = "/employee/createproduct")
 public class CreateProductServlet extends HttpServlet {
     TemplateEngine templateEngine;
 
@@ -67,7 +67,7 @@ public class CreateProductServlet extends HttpServlet {
         }
 
         request.getSession().setAttribute("successMessage", "Product successfully created!");
-        response.sendRedirect(getServletContext().getContextPath() + "/employeehomepage");
+        response.sendRedirect(getServletContext().getContextPath() + "/employee/homepage");
     }
 
     private void checkInputs(String productName, String fee) throws InputException{

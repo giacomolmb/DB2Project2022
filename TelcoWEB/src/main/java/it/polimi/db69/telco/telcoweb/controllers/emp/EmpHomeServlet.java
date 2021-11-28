@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collection;
 
-@WebServlet(name = "EmpHomeServlet", value = "/employeehomepage")
+@WebServlet(name = "EmpHomeServlet", value = "/employee/homepage")
 public class EmpHomeServlet extends HttpServlet {
     TemplateEngine templateEngine;
 
@@ -37,8 +37,6 @@ public class EmpHomeServlet extends HttpServlet {
     }
 
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.setContentType("text/html");
-
         resp.setContentType("text/html");
 
         ServletContext servletContext = getServletContext();

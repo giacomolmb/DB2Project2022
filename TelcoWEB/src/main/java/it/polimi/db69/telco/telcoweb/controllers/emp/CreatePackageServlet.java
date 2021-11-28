@@ -19,7 +19,7 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.Collection;
 
-@WebServlet(name = "CreatePackageServlet", value = "/createpackage")
+@WebServlet(name = "CreatePackageServlet", value = "/employee/createpackage")
 public class CreatePackageServlet extends HttpServlet {
     private String path = "/WEB-INF/employee/emphomepage.html";
 
@@ -108,7 +108,7 @@ public class CreatePackageServlet extends HttpServlet {
             }
 
             request.getSession().setAttribute("successMessage", "Package successfully created!");
-            response.sendRedirect(getServletContext().getContextPath() + "/employeehomepage");
+            response.sendRedirect(getServletContext().getContextPath() + "/employee/homepage");
         } catch (NonUniqueException e) {
             e.printStackTrace();
         }

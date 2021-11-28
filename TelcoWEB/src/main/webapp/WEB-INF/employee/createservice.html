@@ -16,7 +16,7 @@
                 <div data-th-if=${errorMessage!=null} class="alert alert-danger" role="alert" data-th-text="${errorMessage}">
                     Error
                 </div>
-                <form method="post" data-th-action="@{'/createservice'}" id="serviceform">
+                <form method="post" data-th-action="@{'/employee/createservice'}" id="serviceform">
                     <div class="mb-3">
                         <label for="minutes" class="form-label">Service type</label>
                         <select class="form-select" id="servicetype" name="servicetype">

@@ -14,7 +14,7 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.Collection;
 
-@WebServlet(name = "SalesReportServlet", value = "/salesreport")
+@WebServlet(name = "SalesReportServlet", value = "/employee/salesreport")
 public class SalesReportServlet extends HttpServlet {
     TemplateEngine templateEngine;
 
