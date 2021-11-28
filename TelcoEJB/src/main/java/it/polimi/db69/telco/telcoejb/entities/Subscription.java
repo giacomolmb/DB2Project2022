@@ -23,7 +23,7 @@ public class Subscription {
     @OneToOne(mappedBy = "orderSubscription")
     private Order subOrder;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="subscriptionproduct",
             joinColumns=@JoinColumn(name = "subscriptionid"),
             inverseJoinColumns=@JoinColumn(name="productid"))

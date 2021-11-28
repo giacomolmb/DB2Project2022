@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @WebServlet(name = "ConfirmationServlet", value = "/confirmation")
@@ -51,10 +52,11 @@ public class ConfirmationServlet extends HttpServlet {
         WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
         String path = "/WEB-INF/confirmationpage.html";
 
-        Subscription subscription = (Subscription) request.getSession().getAttribute("subscription");
+        int subscriptionId = ((Subscription) request.getSession().getAttribute("subscription")).getId();
+
+        Subscription subscription = subscriptionService.findById(subscriptionId);
 
         ServicePackage servicePackageSelected = subscription.getSubValidityPeriod().getVpPackage();
-
 
         ctx.setVariable("subscription", subscription);
         ctx.setVariable("package", servicePackageSelected);

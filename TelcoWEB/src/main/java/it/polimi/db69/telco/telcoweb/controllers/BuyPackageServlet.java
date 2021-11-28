@@ -59,8 +59,6 @@ public class BuyPackageServlet extends HttpServlet {
         int packageid = Integer.parseInt(request.getParameter("id"));
         ServicePackage selectedPackage = packageService.findPackageById(packageid);
 
-        Collection<Product> products = productService.findAllProducts();
-
         ctx.setVariable("package", selectedPackage);
 
         templateEngine.process(path, ctx, response.getWriter());
