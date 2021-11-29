@@ -50,11 +50,17 @@ public class HomepageServlet extends HttpServlet {
         String path = "/WEB-INF/homepage.html";
 
         HttpSession session = req.getSession();
-        User user = (User) session.getAttribute("user");
+        session.setAttribute("origin", "/homepage");
 
         Collection<ServicePackage> packages = servicePackageService.findAllPackages();
 
-        ctx.setVariable("user", "Welcome back "+user.getUsername()+"!");
+        if(session.getAttribute("user") != null){
+            User user = (User) session.getAttribute("user");
+            ctx.setVariable("user", user.getUsername());
+        }
+        if(req.getSession().getAttribute("successMessage") != null){
+            ctx.setVariable("successMessage", req.getSession().getAttribute("successMessage"));
+        }
         ctx.setVariable("packages", packages );
 
         templateEngine.process(path, ctx, resp.getWriter());

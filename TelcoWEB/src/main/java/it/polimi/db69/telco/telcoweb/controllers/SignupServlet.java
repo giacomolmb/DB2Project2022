@@ -78,7 +78,8 @@ public class SignupServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        resp.sendRedirect(getServletContext().getContextPath()+"/signin");
+        req.getSession().setAttribute("successMessage", "Registration successful. Proceed to sign in!");
+        resp.sendRedirect(getServletContext().getContextPath() + "/signin");
 
     }
 

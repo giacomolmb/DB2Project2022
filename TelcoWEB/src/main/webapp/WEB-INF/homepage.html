@@ -10,16 +10,25 @@
 </head>
 
 <body>
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand h1" th:href="@{homepage}">Telco</a>
+            <span class="d-flex" th:if="${user != null}">
+                Welcome back, <a th:href="@{userprofile}" th:text="${' ' + user}">user</a>!
+            </span>
+            <a th:href="@{/}" th:if="${user == null}" class="d-flex">Login/Register</a>
+        </div>
+    </nav>
     <div class="container">
         <br>
         <h1>Telco Homepage</h1>
-        <div class="card">
-            <div class="card-body" data-th-text="${user}">
-                Not signed in..
-            </div>
-        </div>
         <hr>
-
+        <div data-th-if=${errorMessage!=null} class="alert alert-danger" role="alert" data-th-text="${errorMessage}">
+            Error
+        </div>
+        <div data-th-if=${successMessage!=null} class="alert alert-success" role="alert" data-th-text="${successMessage}">
+            Success
+        </div>
         <h3>Service Packages</h3>
 
         <div class="card m-3" data-th-if="${packages == null}" >

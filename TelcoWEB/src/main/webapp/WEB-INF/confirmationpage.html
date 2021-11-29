@@ -10,6 +10,15 @@
 </head>
 
 <body>
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand h1" th:href="@{homepage}">Telco</a>
+        <span class="d-flex" th:if="${user != null}">
+                Welcome back, <a th:href="@{userprofile}" th:text="${' ' + user}">user</a>!
+            </span>
+        <a th:href="@{/}" th:if="${user == null}" class="d-flex">Login/Register</a>
+    </div>
+</nav>
 <div class="container">
     <br>
     <h1>Confirm order</h1>
@@ -42,6 +51,7 @@
                     <button type="submit" class="col-4 btn btn-primary float-end" data-th-if="${user != null}" >
                         Confirm order
                     </button>
+                    <a th:if="${user == null}" th:href="@{signin}" class="col-4 btn btn-primary float-end" role="button">Sign in to confirm</a>
                 </div>
             </div>
         </div>

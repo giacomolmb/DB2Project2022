@@ -45,6 +45,10 @@ public class SigninServlet extends HttpServlet {
         WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
         path = "/WEB-INF/login.html";
 
+        if(request.getSession().getAttribute("successMessage") != null){
+            ctx.setVariable("successMessage", request.getSession().getAttribute("successMessage"));
+        }
+
         templateEngine.process(path, ctx, response.getWriter());
     }
 
@@ -93,7 +97,11 @@ public class SigninServlet extends HttpServlet {
             */
 
             request.getSession().setAttribute("user", user);
-            response.sendRedirect(getServletContext().getContextPath() + "/homepage");
+            if(request.getSession().getAttribute("origin") == null){
+                response.sendRedirect(getServletContext().getContextPath() + "/homepage");
+            } else {
+                response.sendRedirect(getServletContext().getContextPath() + request.getSession().getAttribute("origin"));
+            }
         }
     }
 

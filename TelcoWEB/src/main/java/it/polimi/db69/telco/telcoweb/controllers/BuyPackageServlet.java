@@ -1,9 +1,6 @@
 package it.polimi.db69.telco.telcoweb.controllers;
 
-import it.polimi.db69.telco.telcoejb.entities.Product;
-import it.polimi.db69.telco.telcoejb.entities.ServicePackage;
-import it.polimi.db69.telco.telcoejb.entities.Subscription;
-import it.polimi.db69.telco.telcoejb.entities.ValidityPeriod;
+import it.polimi.db69.telco.telcoejb.entities.*;
 import it.polimi.db69.telco.telcoejb.services.ProductService;
 import it.polimi.db69.telco.telcoejb.services.ServicePackageService;
 import it.polimi.db69.telco.telcoejb.services.ValidityPeriodService;
@@ -57,6 +54,12 @@ public class BuyPackageServlet extends HttpServlet {
         int packageid = Integer.parseInt(request.getParameter("id"));
         ServicePackage selectedPackage = packageService.findPackageById(packageid);
 
+        request.getSession().setAttribute("origin", "/buypackage?id=" + packageid);
+
+        if(request.getSession().getAttribute("user") != null){
+            User user = (User) request.getSession().getAttribute("user");
+            ctx.setVariable("user", user.getUsername());
+        }
         ctx.setVariable("package", selectedPackage);
 
         templateEngine.process(path, ctx, response.getWriter());

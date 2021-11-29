@@ -5,19 +5,17 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import javax.servlet.ServletContext;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
 import java.io.IOException;
 
-@WebServlet(name = "IndexServlet", value = "")
-public class IndexServlet extends HttpServlet {
+@WebServlet(name = "UserProfileServlet", value = "/userprofile")
+public class UserProfileServlet extends HttpServlet {
+    TemplateEngine templateEngine;
 
-    private TemplateEngine templateEngine;
-
-    public void init() {
+    @Override
+    public void init() throws ServletException {
         ServletContext servletContext = getServletContext();
         ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
         templateResolver.setTemplateMode(TemplateMode.HTML);
@@ -26,17 +24,19 @@ public class IndexServlet extends HttpServlet {
         templateResolver.setSuffix(".html");
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
 
         ServletContext servletContext = getServletContext();
         WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-        String path = "/WEB-INF/index.html";
-
-        if(request.getSession().getAttribute("origin") != null){
-            ctx.setVariable("origin", request.getSession().getAttribute("origin"));
-        }
+        String path = "/WEB-INF/userprofile.html";
 
         templateEngine.process(path, ctx, response.getWriter());
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
     }
 }

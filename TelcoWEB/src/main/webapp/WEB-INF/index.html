@@ -26,7 +26,7 @@
           <label for="password" class="form-label">Password</label>
           <input type="password" class="form-control" id="password" name="password">
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Sign in</button>
       </form>
     </div>
     <div class="col">
@@ -51,11 +51,12 @@
           <label for="reg-conf-password" class="form-label">Confirm Password</label>
           <input type="password" class="form-control" id="reg-conf-password" name="reg-conf-password">
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Sign up</button>
       </form>
     </div>
   </div>
   <hr>
+  <a th:if="${origin == null}" class="btn btn-primary btn-lg" th:href="@{homepage}" role="button">Continue without login</a>
   <a href="employee/login" class="float-end">Employee login</a>
 </div>
 </body>

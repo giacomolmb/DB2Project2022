@@ -49,21 +49,22 @@ public class ConfirmationServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
 
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-
         ServletContext servletContext = getServletContext();
         WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
         String path = "/WEB-INF/confirmationpage.html";
 
+        request.getSession().setAttribute("origin", "/confirmation");
+
         Subscription subscription = ((Subscription) request.getSession().getAttribute("subscription"));
-        //request.getSession().removeAttribute("subscription");
 
         ServicePackage servicePackageSelected = subscription.getSubValidityPeriod().getVpPackage();
 
+        if(request.getSession().getAttribute("user") != null){
+            User user = (User) request.getSession().getAttribute("user");
+            ctx.setVariable("user", user.getUsername());
+        }
         ctx.setVariable("subscription", subscription);
         ctx.setVariable("package", servicePackageSelected);
-        ctx.setVariable("user", user);
 
         templateEngine.process(path, ctx, response.getWriter());
     }
@@ -71,6 +72,7 @@ public class ConfirmationServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Subscription subscription = (Subscription) request.getSession().getAttribute("subscription");
+        //request.getSession().removeAttribute("subscription");
         orderService.createSubscription(subscription);
 
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -80,9 +82,10 @@ public class ConfirmationServlet extends HttpServlet {
 
         Order order = orderService.createOrder(timestamp, userId, subscription.getId());
 
-        request.getSession().setAttribute("order", order);
+        request.getSession().setAttribute("order", order); //serve?
 
-        response.sendRedirect(getServletContext().getContextPath() + "/hello-servlet");
+        request.getSession().setAttribute("successMessage", "Order successfully placed!");
+        response.sendRedirect(getServletContext().getContextPath() + "/homepage");
     }
 
     public void destroy() {
