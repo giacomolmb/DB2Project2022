@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `telco_db` /*!40100 DEFAULT CHARACTER SET utf8 */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `telco_db`;
--- MySQL dump 10.13  Distrib 8.0.27, for macos11 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.26, for macos11 (x86_64)
 --
 -- Host: localhost    Database: telco_db
 -- ------------------------------------------------------
--- Server version	8.0.27
+-- Server version	8.0.26
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -27,7 +27,7 @@ DROP TABLE IF EXISTS `alert`;
 CREATE TABLE `alert` (
   `id` int NOT NULL AUTO_INCREMENT,
   `userId` int NOT NULL,
-  `datetime` datetime NOT NULL,
+  `datetime` timestamp NOT NULL,
   `amount` double NOT NULL,
   PRIMARY KEY (`id`),
   KEY `userId_idx` (`userId`),
@@ -42,6 +42,37 @@ CREATE TABLE `alert` (
 LOCK TABLES `alert` WRITE;
 /*!40000 ALTER TABLE `alert` DISABLE KEYS */;
 /*!40000 ALTER TABLE `alert` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `costumer_order`
+--
+
+DROP TABLE IF EXISTS `costumer_order`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `costumer_order` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `datetime` timestamp NOT NULL,
+  `status` varchar(45) NOT NULL DEFAULT 'PENDING',
+  `userid` int DEFAULT NULL,
+  `subscriptionId` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `order_userid_idx` (`userid`),
+  KEY `order_subscriptionid_idx` (`subscriptionId`),
+  CONSTRAINT `order_subscriptionid` FOREIGN KEY (`subscriptionId`) REFERENCES `subscription` (`id`),
+  CONSTRAINT `order_userid` FOREIGN KEY (`userid`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `costumer_order`
+--
+
+LOCK TABLES `costumer_order` WRITE;
+/*!40000 ALTER TABLE `costumer_order` DISABLE KEYS */;
+INSERT INTO `costumer_order` VALUES (1,'2021-11-29 14:59:23','pending',1,1);
+/*!40000 ALTER TABLE `costumer_order` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -94,36 +125,6 @@ CREATE TABLE `login_log` (
 LOCK TABLES `login_log` WRITE;
 /*!40000 ALTER TABLE `login_log` DISABLE KEYS */;
 /*!40000 ALTER TABLE `login_log` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `order`
---
-
-DROP TABLE IF EXISTS `order`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `order` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `datetime` datetime NOT NULL,
-  `status` varchar(45) NOT NULL DEFAULT 'PENDING',
-  `userid` int DEFAULT NULL,
-  `subscriptionId` int NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `order_userid_idx` (`userid`),
-  KEY `order_subscriptionid_idx` (`subscriptionId`),
-  CONSTRAINT `order_subscriptionid` FOREIGN KEY (`subscriptionId`) REFERENCES `subscription` (`id`),
-  CONSTRAINT `order_userid` FOREIGN KEY (`userid`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `order`
---
-
-LOCK TABLES `order` WRITE;
-/*!40000 ALTER TABLE `order` DISABLE KEYS */;
-/*!40000 ALTER TABLE `order` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -280,7 +281,7 @@ CREATE TABLE `subscription` (
   PRIMARY KEY (`id`),
   KEY `subscription_vpid_idx` (`vpid`),
   CONSTRAINT `subscription_vpid` FOREIGN KEY (`vpid`) REFERENCES `validityperiod` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -289,6 +290,7 @@ CREATE TABLE `subscription` (
 
 LOCK TABLES `subscription` WRITE;
 /*!40000 ALTER TABLE `subscription` DISABLE KEYS */;
+INSERT INTO `subscription` VALUES (1,20,'2021-11-03');
 /*!40000 ALTER TABLE `subscription` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -315,6 +317,7 @@ CREATE TABLE `subscriptionproduct` (
 
 LOCK TABLES `subscriptionproduct` WRITE;
 /*!40000 ALTER TABLE `subscriptionproduct` DISABLE KEYS */;
+INSERT INTO `subscriptionproduct` VALUES (1,106);
 /*!40000 ALTER TABLE `subscriptionproduct` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -388,7 +391,7 @@ UNLOCK TABLES;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `packagepurchase` (`packageid`,`vpid`,`orderid`) AS select `V`.`packageid` AS `packageid`,`V`.`id` AS `id`,`O`.`id` AS `id` from ((`validityperiod` `V` join `subscription` `S`) join `order` `O`) where ((`V`.`id` = `S`.`vpid`) and (`S`.`id` = `O`.`subscriptionId`) and (`O`.`status` = 'ACCEPTED')) */;
+/*!50001 VIEW `packagepurchase` (`packageid`,`vpid`,`orderid`) AS select `V`.`packageid` AS `packageid`,`V`.`id` AS `id`,`O`.`id` AS `id` from ((`validityperiod` `V` join `subscription` `S`) join `costumer_order` `O`) where ((`V`.`id` = `S`.`vpid`) and (`S`.`id` = `O`.`subscriptionId`) and (`O`.`status` = 'ACCEPTED')) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -406,7 +409,7 @@ UNLOCK TABLES;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `sales_report` (`packageid`,`vpid`,`orderid`,`basic_value`,`total_value`,`num_of_products`) AS select `V`.`packageid` AS `packageid`,`V`.`id` AS `id`,`O`.`id` AS `id`,(`V`.`fee` * `V`.`months`) AS `V.fee*V.months`,((`V`.`fee` * `V`.`months`) + (`V`.`months` * sum(`P`.`fee`))) AS `(V.fee*V.months)+(V.months*SUM(P.fee))`,count(`P`.`fee`) AS `COUNT(P.fee)` from ((((`validityperiod` `V` join `subscription` `S`) join `order` `O`) join `subscriptionproduct` `SP`) join `product` `P`) where ((`V`.`id` = `S`.`vpid`) and (`S`.`id` = `O`.`subscriptionId`) and (`S`.`id` = `SP`.`subscriptionid`) and (`P`.`id` = `SP`.`productid`) and (`O`.`status` = 'ACCEPTED')) group by `V`.`packageid`,`V`.`id`,`O`.`id`,`V`.`fee`,`V`.`months` */;
+/*!50001 VIEW `sales_report` (`packageid`,`vpid`,`orderid`,`basic_value`,`total_value`,`num_of_products`) AS select `V`.`packageid` AS `packageid`,`V`.`id` AS `id`,`O`.`id` AS `id`,(`V`.`fee` * `V`.`months`) AS `V.fee*V.months`,((`V`.`fee` * `V`.`months`) + (`V`.`months` * sum(`P`.`fee`))) AS `(V.fee*V.months)+(V.months*SUM(P.fee))`,count(`P`.`fee`) AS `COUNT(P.fee)` from ((((`validityperiod` `V` join `subscription` `S`) join `costumer_order` `O`) join `subscriptionproduct` `SP`) join `product` `P`) where ((`V`.`id` = `S`.`vpid`) and (`S`.`id` = `O`.`subscriptionId`) and (`S`.`id` = `SP`.`subscriptionid`) and (`P`.`id` = `SP`.`productid`) and (`O`.`status` = 'ACCEPTED')) group by `V`.`packageid`,`V`.`id`,`O`.`id`,`V`.`fee`,`V`.`months` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -420,4 +423,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-11-27 15:14:46
+-- Dump completed on 2021-11-29 16:33:16
