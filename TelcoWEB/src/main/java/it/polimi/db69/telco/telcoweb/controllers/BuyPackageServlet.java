@@ -3,11 +3,10 @@ package it.polimi.db69.telco.telcoweb.controllers;
 import it.polimi.db69.telco.telcoejb.entities.Product;
 import it.polimi.db69.telco.telcoejb.entities.ServicePackage;
 import it.polimi.db69.telco.telcoejb.entities.Subscription;
-import it.polimi.db69.telco.telcoejb.entities.User;
+import it.polimi.db69.telco.telcoejb.entities.ValidityPeriod;
 import it.polimi.db69.telco.telcoejb.services.ProductService;
 import it.polimi.db69.telco.telcoejb.services.ServicePackageService;
-import it.polimi.db69.telco.telcoejb.services.SubscriptionService;
-import it.polimi.db69.telco.telcoejb.services.UserService;
+import it.polimi.db69.telco.telcoejb.services.ValidityPeriodService;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -18,25 +17,24 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
+import java.util.ArrayList;
 
 @WebServlet(name = "BuyPackageServlet", value = "/buypackage")
 public class BuyPackageServlet extends HttpServlet {
     private TemplateEngine templateEngine;
 
-    @EJB(name = "it.polimi.db69.telco.telcoejb.services/ProductService")
-    private ProductService productService;
-
     @EJB(name = "it.polimi.db69.telco.telcoejb.services/ServicePackageService")
     private ServicePackageService packageService;
 
-    @EJB(name = "it.polimi.db69.telco.telcoejb.services/SubscriptionService")
-    private SubscriptionService subscriptionService;
+    @EJB(name = "it.polimi.db69.telco.telcoejb.services/ProductService")
+    private ProductService productService;
+
+    @EJB(name = "it.polimi.db69.telco.telcoejb.services/ValidityPeriodService")
+    private ValidityPeriodService vpService;
 
     @Override
     public void init() throws ServletException {
@@ -71,14 +69,19 @@ public class BuyPackageServlet extends HttpServlet {
             startDate = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("startDate"));
             Date startSQLDate =  new java.sql.Date(startDate.getTime());
 
-            int validityPeriod = Integer.parseInt(request.getParameter("vp"));
+            int vpId = Integer.parseInt(request.getParameter("vp"));
+            ValidityPeriod validityPeriod = vpService.findById(vpId);
 
-            Subscription subscription = subscriptionService.createSubscription(startSQLDate, validityPeriod);
+            Subscription subscription = new Subscription(startSQLDate, validityPeriod);
+
+            ArrayList<Product> products = new ArrayList<>();
 
             if(request.getParameter("optionalProducts") != null){
                 for(String optProd : request.getParameterValues("optionalProducts")){
-                    subscriptionService.addProductToSubscription(Integer.parseInt(optProd), subscription.getId());
+                    Product product = productService.findProductById(Integer.parseInt(optProd));
+                    products.add(product);
                 }
+                subscription.setSubscriptionProducts(products);
             }
 
             request.getSession().setAttribute("subscription",subscription);

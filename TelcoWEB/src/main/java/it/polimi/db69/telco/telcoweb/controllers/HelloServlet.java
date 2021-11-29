@@ -1,6 +1,8 @@
 package it.polimi.db69.telco.telcoweb.controllers;
 
+import it.polimi.db69.telco.telcoejb.entities.Order;
 import it.polimi.db69.telco.telcoejb.entities.User;
+import it.polimi.db69.telco.telcoejb.services.OrderService;
 import org.thymeleaf.context.WebContext;
 
 import java.io.*;
@@ -19,11 +21,12 @@ public class HelloServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
 
-        User user = (User)request.getSession().getAttribute("user");
+        Order order = (Order)request.getSession().getAttribute("order");
 
-        if(user != null){
-            message = "Welcome back, " + user.getUsername();
-        }
+        message = "Welcome back, " + order.getOrderUser().getUsername() +
+                "order id: " + order.getId() +
+                "sub id: " + order.getOrderSubscription().getId() +
+                "dateTime : " + order.getDatetime();
 
         // Hello
         PrintWriter out = response.getWriter();

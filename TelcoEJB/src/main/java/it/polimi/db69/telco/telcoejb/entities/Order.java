@@ -4,9 +4,10 @@ import it.polimi.db69.telco.telcoejb.enums.OrderStatus;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "order")
+@Table(name = "costumer_order")
 public class Order{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +18,7 @@ public class Order{
     private Timestamp datetime;
 
     @Column (name = "status", nullable = false, length = 45)
-    private OrderStatus status;
+    private String status;
 
     @OneToOne
     @JoinColumn(name = "subscriptionid")
@@ -30,10 +31,9 @@ public class Order{
     public Order() {
     }
 
-    public Order(int id, Timestamp datetime, OrderStatus status, User orderUser, Subscription orderSubscription) {
-        this.id = id;
+    public Order(Timestamp datetime, User orderUser, Subscription orderSubscription) {
         this.datetime = datetime;
-        this.status = status;
+        this.status = "pending";
         this.orderUser = orderUser;
         this.orderSubscription = orderSubscription;
     }
@@ -54,11 +54,11 @@ public class Order{
         this.datetime = datetime;
     }
 
-    public OrderStatus getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(OrderStatus status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
