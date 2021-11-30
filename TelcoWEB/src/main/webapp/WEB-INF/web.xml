@@ -11,4 +11,16 @@
         <url-pattern>/employee/homepage</url-pattern>
         <url-pattern>/employee/salesreport</url-pattern>
     </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>LoggedInFilter</filter-name>
+        <url-pattern>/signin</url-pattern>
+        <url-pattern>/signup</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>NotLoggedFilter</filter-name>
+        <url-pattern>/userprofile</url-pattern>
+        <url-pattern>/logout</url-pattern>
+    </filter-mapping>
 </web-app>

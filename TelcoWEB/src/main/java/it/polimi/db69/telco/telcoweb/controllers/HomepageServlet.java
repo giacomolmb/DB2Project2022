@@ -54,6 +54,9 @@ public class HomepageServlet extends HttpServlet {
 
         Collection<ServicePackage> packages = servicePackageService.findAllPackages();
 
+        if(session.getAttribute("subscription") != null){
+            session.removeAttribute("subscription");
+        }
         if(session.getAttribute("user") != null){
             User user = (User) session.getAttribute("user");
             ctx.setVariable("user", user.getUsername());
