@@ -23,4 +23,9 @@
         <url-pattern>/userprofile</url-pattern>
         <url-pattern>/logout</url-pattern>
     </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>ConfirmationFilter</filter-name>
+        <url-pattern>/confirmation</url-pattern>
+    </filter-mapping>
 </web-app>
