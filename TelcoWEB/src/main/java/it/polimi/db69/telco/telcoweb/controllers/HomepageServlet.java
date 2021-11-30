@@ -63,6 +63,7 @@ public class HomepageServlet extends HttpServlet {
         }
         if(req.getSession().getAttribute("successMessage") != null){
             ctx.setVariable("successMessage", req.getSession().getAttribute("successMessage"));
+            req.getSession().removeAttribute("successMessage");
         }
         ctx.setVariable("packages", packages );
 

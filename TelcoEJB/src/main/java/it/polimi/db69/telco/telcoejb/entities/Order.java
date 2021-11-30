@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "costumer_order")
+@Table(name = "customer_order")
 public class Order{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +33,7 @@ public class Order{
 
     public Order(Timestamp datetime, User orderUser, Subscription orderSubscription) {
         this.datetime = datetime;
-        this.status = "pending";
+        this.status = "ACCEPTED"; //todo aggiustare
         this.orderUser = orderUser;
         this.orderSubscription = orderSubscription;
     }
