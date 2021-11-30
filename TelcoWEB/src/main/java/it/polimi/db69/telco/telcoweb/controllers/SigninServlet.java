@@ -95,7 +95,7 @@ public class SigninServlet extends HttpServlet {
                 return;
             }
             */
-
+            userService.addLog(user.getId());
             request.getSession().setAttribute("user", user);
             if(request.getSession().getAttribute("origin") == null){
                 response.sendRedirect(getServletContext().getContextPath() + "/homepage");

@@ -1,11 +1,13 @@
 package it.polimi.db69.telco.telcoejb.services;
 
+import it.polimi.db69.telco.telcoejb.entities.LoginLog;
 import it.polimi.db69.telco.telcoejb.entities.User;
 
 
 import javax.ejb.Stateless;
 import javax.persistence.*;
 import javax.security.auth.login.CredentialException;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Stateless
@@ -42,6 +44,16 @@ public class UserService {
 
             return user;
         }
+    }
+
+    public void addLog(int userid){
+        User user = findUserById(userid);
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+        LoginLog loginLog = new LoginLog(timestamp);
+        user.addUserLogin(loginLog);
+
+        em.persist(user);
     }
 }
 

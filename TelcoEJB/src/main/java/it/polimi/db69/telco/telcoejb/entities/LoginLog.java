@@ -20,6 +20,12 @@ public class LoginLog {
     @JoinColumn(name = "userid")
     private User loggedUser;
 
+    public LoginLog(){}
+
+    public LoginLog(Timestamp timestamp){
+        this.logtime = timestamp;
+    }
+
     public int getId() {
         return id;
     }

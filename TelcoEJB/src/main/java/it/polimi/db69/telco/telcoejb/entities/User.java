@@ -36,7 +36,7 @@ public class User {
     @OneToMany(mappedBy = "orderUser")
     private Collection<Order> userOrders;
 
-    @OneToMany(mappedBy = "loggedUser")
+    @OneToMany(mappedBy = "loggedUser", cascade = CascadeType.PERSIST)
     private Collection<LoginLog> userLogins;
 
     public User(String username, String password, String email) {
@@ -110,5 +110,10 @@ public class User {
 
     public void setUserLogins(Collection<LoginLog> userLogins) {
         this.userLogins = userLogins;
+    }
+
+    public void addUserLogin(LoginLog loginLog){
+        this.userLogins.add(loginLog);
+        loginLog.setLoggedUser(this);
     }
 }
