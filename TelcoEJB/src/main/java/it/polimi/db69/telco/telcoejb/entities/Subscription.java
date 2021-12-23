@@ -2,7 +2,10 @@ package it.polimi.db69.telco.telcoejb.entities;
 
 import javax.persistence.*;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Collection;
 import java.sql.Date;
 
@@ -86,6 +89,22 @@ public class Subscription {
         return totalPrice;
     }
 
-    //todo start date - expiration date
+
+    public String getStringStartDate(){
+       DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        return (String) dateFormat.format(startDate);
+    }
+
+
+    public String getExpirationDate(){
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        Calendar c = Calendar.getInstance();
+        c.setTime(startDate);
+        c.add(Calendar.MONTH, subValidityPeriod.getMonths());
+        Date expirationDate = new Date(c.getTimeInMillis());
+        String strDate = dateFormat.format(expirationDate);
+        return strDate;
+    }
+
 
 }
