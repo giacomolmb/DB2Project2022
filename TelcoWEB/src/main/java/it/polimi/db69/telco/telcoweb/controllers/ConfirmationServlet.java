@@ -80,12 +80,11 @@ public class ConfirmationServlet extends HttpServlet {
 
         int userId = ((User)request.getSession().getAttribute("user")).getId();
 
-        Order order = orderService.createOrder(timestamp, userId, subscription.getId());
+        int orderId = orderService.createOrder(timestamp, userId, subscription.getId()).getId();
 
-        request.getSession().setAttribute("order", order); //serve?
+        request.getSession().setAttribute("amount", subscription.calculateTotalPrice());
 
-        request.getSession().setAttribute("successMessage", "Order successfully placed!");
-        response.sendRedirect(getServletContext().getContextPath() + "/homepage");
+        response.sendRedirect(getServletContext().getContextPath() + "/payment");
     }
 
     public void destroy() {

@@ -18,9 +18,6 @@ public class OrderService {
     @PersistenceContext(unitName = "TELCOEJB")
     private EntityManager em;
 
-    @EJB(name = "it.polimi.db69.telco.telcoejb.services/OrderService")
-    private OrderService orderService;
-
     @EJB(name = "it.polimi.db69.telco.telcoejb.services/UserService")
     private UserService userService;
 
@@ -58,8 +55,4 @@ public class OrderService {
 
         return subscription;
     }
-
-
-
-
 }

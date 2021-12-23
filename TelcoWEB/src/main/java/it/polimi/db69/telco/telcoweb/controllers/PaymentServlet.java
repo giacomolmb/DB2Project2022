@@ -1,7 +1,6 @@
 package it.polimi.db69.telco.telcoweb.controllers;
 
-import it.polimi.db69.telco.telcoejb.entities.User;
-import it.polimi.db69.telco.telcoejb.services.UserService;
+import it.polimi.db69.telco.telcoejb.services.OrderService;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -13,9 +12,9 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 
-@WebServlet(name = "UserProfileServlet", value = "/userprofile")
-public class UserProfileServlet extends HttpServlet {
-    TemplateEngine templateEngine;
+@WebServlet(name = "PaymentServlet", value = "/payment")
+public class PaymentServlet extends HttpServlet {
+    private TemplateEngine templateEngine;
 
     @Override
     public void init() throws ServletException {
@@ -28,23 +27,24 @@ public class UserProfileServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
 
         ServletContext servletContext = getServletContext();
         WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-        String path = "/WEB-INF/userprofile.html";
+        String path = "/WEB-INF/payment.html";
 
-        if(request.getSession().getAttribute("user") != null){
-            User user = (User) request.getSession().getAttribute("user");
-            ctx.setVariable("user", user.getUsername());
-        }
+        ctx.setVariable("amount", String.format("%.2f", (Double) request.getSession().getAttribute("amount")));
 
         templateEngine.process(path, ctx, response.getWriter());
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getSession().setAttribute("successMessage", "Order successfully placed!");
+        response.sendRedirect(getServletContext().getContextPath() + "/homepage");
+    }
 
+    public void destroy() {
     }
 }

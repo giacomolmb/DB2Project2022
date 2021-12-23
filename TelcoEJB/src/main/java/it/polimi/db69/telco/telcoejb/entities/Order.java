@@ -33,7 +33,7 @@ public class Order{
 
     public Order(Timestamp datetime, User orderUser, Subscription orderSubscription) {
         this.datetime = datetime;
-        this.status = "ACCEPTED"; //todo aggiustare
+        this.status = "PENDING";
         this.orderUser = orderUser;
         this.orderSubscription = orderSubscription;
     }
