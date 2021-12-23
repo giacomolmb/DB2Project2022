@@ -64,7 +64,7 @@
             <hr>
             <div class="row">
                 <div class="col">
-                    <h3 class="card-title" data-th-text = "${'Total price: ' + subscription.calculateTotalPrice() + '$'}"> Total price</h3>
+                    <h3 class="card-title" data-th-text = "${'Total price: ' + subscription.totalPriceAsString() + ' $'}"> Total price</h3>
                 </div>
                 <div class="col">
                     <button type="submit" class="col-4 btn btn-primary float-end" data-th-if="${user != null}" >

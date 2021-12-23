@@ -4,6 +4,7 @@ package it.polimi.db69.telco.telcoejb.entities;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import java.util.Locale;
 
 @Entity
 @DiscriminatorValue("mobileinternet")
@@ -30,6 +31,6 @@ public class MobileInternet extends Service{
 
     @Override
     public String printExtraFees() {
-        return String.format("%.2f", gigafee) + "$ for each extra GB";
+        return String.format(Locale.US, "%.2f", gigafee) + "$ for each extra GB";
     }
 }

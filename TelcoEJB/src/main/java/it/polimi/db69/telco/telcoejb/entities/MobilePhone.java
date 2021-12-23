@@ -5,6 +5,7 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import java.text.DecimalFormat;
+import java.util.Locale;
 
 @Entity
 @DiscriminatorValue("mobilephone")
@@ -39,6 +40,6 @@ public class MobilePhone extends Service{
 
     @Override
     public String printExtraFees() {
-        return String.format("%.2f", minutesfee) + "$ for each extra minute, " + String.format("%.2f", smsfee) + "$ for each extra SMS";
+        return String.format(Locale.US, "%.2f", minutesfee) + "$ for each extra minute, " + String.format("%.2f", smsfee) + "$ for each extra SMS";
     }
 }

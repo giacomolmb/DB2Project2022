@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Collection;
 import java.sql.Date;
+import java.util.Locale;
 
 @Entity
 @Table(name = "subscription")
@@ -87,6 +88,9 @@ public class Subscription {
         return price;
     }
 
+    public String totalPriceAsString(){
+        return String.format(Locale.US, "%.2f", this.calculateTotalPrice());
+    }
 
     public String getStringStartDate(){
        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
