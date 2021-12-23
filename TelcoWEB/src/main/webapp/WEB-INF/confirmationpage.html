@@ -47,12 +47,20 @@
                 </li>
             </ul>
             <hr>
-            <h5>Optional products</h5>
-            <ul class="list-group list-group-flush" >
-                <li class="list-group-item" data-th-each="product : ${subscription.subscriptionProducts}">
-                    <span data-th-text="${product.name} + ' - ' + ${product.fee} + '$'"> Optional product with fee</span>
-                </li>
-            </ul>
+            <div class="row">
+                <div class="col">
+                    <h5>Optional products</h5>
+                    <ul class="list-group list-group-flush" >
+                        <li class="list-group-item" data-th-each="product : ${subscription.subscriptionProducts}">
+                        <span data-th-text="${product.name} + ' - ' + ${product.fee} + '$'"> Optional product with fee</span>
+                        </li>
+                        </ul>
+                </div>
+                <div class="col">
+                    <h5 class="card-title" data-th-text = "'Start Date:  ' + ${subscription.getStringStartDate} "> start Date </h5>
+                    <h5 class="card-title" data-th-text = "'Expiration Date:  ' +  ${subscription.getExpirationDate}" > expirationDate Date </h5>
+                </div>
+            </div>
             <hr>
             <div class="row">
                 <div class="col">
