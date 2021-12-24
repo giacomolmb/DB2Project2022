@@ -18,10 +18,12 @@
       <hr>
       <h3 data-th-text = "${'Amount: ' + amount + ' $'}">Amount: --.--$</h3>
       <br>
-      <div class="d-grid gap-2">
-        <button class="btn btn-lg btn-primary" type="button">Confirm payment!</button>
-        <button type="button" class="btn btn-link">Simulate failed payment</button>
-      </div>
+        <form name="mainForm" id="mainForm" data-th-action="@{'/payment'}" method="post">
+        <div class="d-grid gap-2">
+              <button class="btn btn-lg btn-primary" name="action" value="success">Confirm payment!</button>
+              <button class="btn btn-link" name="action" value="failure">Simulate failed payment</button>
+        </div>
+        </form>
     </div>
   </div>
 </div>

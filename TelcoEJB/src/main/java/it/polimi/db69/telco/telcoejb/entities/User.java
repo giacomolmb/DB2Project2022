@@ -33,7 +33,7 @@ public class User {
     @OneToMany(mappedBy = "alertUser")
     private Collection<Alert> userAlerts;
 
-    @OneToMany(mappedBy = "orderUser")
+    @OneToMany(mappedBy = "orderUser", cascade = CascadeType.ALL)
     private Collection<Order> userOrders;
 
     @OneToMany(mappedBy = "loggedUser", cascade = CascadeType.PERSIST)

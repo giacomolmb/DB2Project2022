@@ -16,6 +16,9 @@ import java.io.IOException;
 public class PaymentServlet extends HttpServlet {
     private TemplateEngine templateEngine;
 
+    @EJB(name = "it.polimi.db69.telco.telcoejb.services/OrderService")
+    private OrderService orderService;
+
     @Override
     public void init() throws ServletException {
         ServletContext servletContext = getServletContext();
@@ -41,7 +44,19 @@ public class PaymentServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getSession().setAttribute("successMessage", "Order successfully placed!");
+        String action = request.getParameter("action");
+
+        int orderId = (int) request.getSession().getAttribute("orderId");
+
+        if(action.equals("success")){
+            orderService.confirmOrder(orderId);
+            request.getSession().setAttribute("successMessage", "Order successfully placed!");
+        } else if(action.equals("failure")){
+            orderService.rejectOrder(orderId);
+            request.getSession().setAttribute("errorMessage", "Order rejected by the payment service. You can try again from your profile page.");
+        }
+
+        request.removeAttribute("orderId");
         response.sendRedirect(getServletContext().getContextPath() + "/homepage");
     }
 

@@ -24,7 +24,7 @@ public class Subscription {
     @JoinColumn(name = "vpid")
     private ValidityPeriod subValidityPeriod;
 
-    @OneToOne(mappedBy = "orderSubscription")
+    @OneToOne(mappedBy = "orderSubscription", cascade = CascadeType.ALL)
     private Order subOrder;
 
     @ManyToMany(fetch = FetchType.EAGER)

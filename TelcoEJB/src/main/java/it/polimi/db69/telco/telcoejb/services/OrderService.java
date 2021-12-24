@@ -55,4 +55,16 @@ public class OrderService {
 
         return subscription;
     }
+
+    public void confirmOrder(int orderId){
+        Order order = em.find(Order.class, orderId);
+        order.setStatus("ACCEPTED");
+        em.merge(order);
+    }
+
+    public void rejectOrder(int orderId){
+        Order order = em.find(Order.class, orderId);
+        order.setStatus("REJECTED");
+        em.merge(order);
+    }
 }

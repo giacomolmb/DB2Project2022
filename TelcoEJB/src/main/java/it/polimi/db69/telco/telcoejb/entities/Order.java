@@ -17,7 +17,7 @@ public class Order{
     @Column(name = "datetime", nullable = false)
     private Timestamp datetime;
 
-    @Column (name = "status", nullable = false, length = 45)
+    @Column (name = "order_status", nullable = false, length = 45)
     private String status;
 
     @OneToOne
