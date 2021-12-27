@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://java.sun.com/jsf/html">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -29,8 +29,50 @@
     </div>
 </nav>
 <br>
-<div class="container">
+<div class="card m-3" data-th-if="${orders == null}" >
+    <div class="card-body">
+        <h1>User Profile</h1>
+        <hr>
+        <h3 class="card-title">
+            There are no orders placed yet
+        </h3>
+    </div>
+</div>
+<div class="container" data-th-if="${orders != null}">
     <h1>User Profile</h1>
+    <hr>
+    <h3> Orders </h3>
+    <table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">Order ID</th>
+        <th scope="col">Order placed on </th>
+        <th scope="col">Status</th>
+        <th scope="col">Total</th>
+        <th scope="col">Pay</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr data-th-each="order : ${orders}">
+        <form name="mainForm" id="mainForm" data-th-action="@{'/userprofile'}" method="post">
+        <th scope="row" data-th-text="${order.id}">id</th>
+        <td data-th-text="${order.datetime}">date</td>
+        <td data-th-text="${order.status}">status</td>
+        <td data-th-text="${order.orderSubscription.totalPriceAsString()}">total</td>
+        <td>
+            <button type="submit" class="btn btn-primary btn-sm" data-th-if="${order.status}=='REJECTED'">Pay</button>
+        </td>
+            <input type="hidden" name="orderId" data-th-value="${order.id}" />
+            <input type="hidden" name="amount" data-th-value="${order.orderSubscription.calculateTotalPrice()}" />
+        </form>
+    </tr>
+
+    </tbody>
+    </table>
+    <hr>
+    <h3>Service Activation Schedule</h3>
+
 </div>
 </body>
 </html>

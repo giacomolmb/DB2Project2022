@@ -8,6 +8,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "customer_order")
+@NamedQueries({
+        @NamedQuery(name = "Order.getRejectedOrders", query = "select o from Order o where o.status = 'REJECTED'")
+})
 public class Order{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

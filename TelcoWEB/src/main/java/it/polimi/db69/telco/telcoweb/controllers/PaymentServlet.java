@@ -36,7 +36,6 @@ public class PaymentServlet extends HttpServlet {
         ServletContext servletContext = getServletContext();
         WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
         String path = "/WEB-INF/payment.html";
-
         ctx.setVariable("amount", String.format("%.2f", (Double) request.getSession().getAttribute("amount")));
 
         templateEngine.process(path, ctx, response.getWriter());

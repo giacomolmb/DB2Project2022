@@ -11,6 +11,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Stateless
 public class OrderService {
@@ -31,6 +33,13 @@ public class OrderService {
 
     public Order findOrderById(int orderId){
         return em.find(Order.class, orderId);
+    }
+
+    public Collection<Order> findRejectedOrders(){
+        if (em.createNamedQuery("Order.getRejectedOrders", Order.class).getResultList().isEmpty())
+            return null;
+        else
+            return em.createNamedQuery("Order.getRejectedOrders", Order.class).getResultList();
     }
 
     public Order createOrder(Timestamp datetime, int userId, int subscriptionId){

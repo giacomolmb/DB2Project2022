@@ -38,6 +38,7 @@ public class UserProfileServlet extends HttpServlet {
         if(request.getSession().getAttribute("user") != null){
             User user = (User) request.getSession().getAttribute("user");
             ctx.setVariable("user", user.getUsername());
+            ctx.setVariable("orders", user.getUserOrders());
         }
 
         templateEngine.process(path, ctx, response.getWriter());
@@ -45,6 +46,8 @@ public class UserProfileServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        request.getSession().setAttribute("orderId", request.getAttribute("orderId"));
+        request.getSession().setAttribute("amount", request.getAttribute("amount"));
+        response.sendRedirect(getServletContext().getContextPath() + "/payment");
     }
 }
