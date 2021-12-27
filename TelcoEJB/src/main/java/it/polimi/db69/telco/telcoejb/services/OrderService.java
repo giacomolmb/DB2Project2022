@@ -69,11 +69,15 @@ public class OrderService {
         Order order = em.find(Order.class, orderId);
         order.setStatus("ACCEPTED");
         em.merge(order);
+
+        em.flush();
     }
 
     public void rejectOrder(int orderId){
         Order order = em.find(Order.class, orderId);
         order.setStatus("REJECTED");
         em.merge(order);
+
+        em.flush();
     }
 }

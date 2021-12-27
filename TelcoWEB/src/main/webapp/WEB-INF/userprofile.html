@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://java.sun.com/jsf/html">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -43,32 +43,32 @@
     <hr>
     <h3> Orders </h3>
     <table class="table table-striped">
-    <thead>
-    <tr>
-        <th scope="col">Order ID</th>
-        <th scope="col">Order placed on </th>
-        <th scope="col">Status</th>
-        <th scope="col">Total</th>
-        <th scope="col">Pay</th>
-    </tr>
-    </thead>
-    <tbody>
+        <thead>
+        <tr>
+            <th scope="col">Order ID</th>
+            <th scope="col">Order placed on </th>
+            <th scope="col">Status</th>
+            <th scope="col">Total</th>
+            <th scope="col">Pay</th>
+        </tr>
+        </thead>
+        <tbody>
 
-    <tr data-th-each="order : ${orders}">
-        <form name="mainForm" id="mainForm" data-th-action="@{'/userprofile'}" method="post">
-        <th scope="row" data-th-text="${order.id}">id</th>
-        <td data-th-text="${order.datetime}">date</td>
-        <td data-th-text="${order.status}">status</td>
-        <td data-th-text="${order.orderSubscription.totalPriceAsString()}">total</td>
-        <td>
-            <button type="submit" class="btn btn-primary btn-sm" data-th-if="${order.status}=='REJECTED'">Pay</button>
-        </td>
-            <input type="hidden" name="orderId" data-th-value="${order.id}" />
-            <input type="hidden" name="amount" data-th-value="${order.orderSubscription.calculateTotalPrice()}" />
-        </form>
-    </tr>
+        <tr data-th-each="order : ${orders}">
+            <form data-th-name="${'form' + order.id}" data-th-id="${'form' + order.id}" data-th-action="@{'/userprofile'}" method="post">
+                <input type="hidden" name="orderId" data-th-value="${order.id}" />
+                <input type="hidden" name="amount" data-th-value="${order.orderSubscription.calculateTotalPrice()}" />
+                <th scope="row" data-th-text="${order.id}">id</th>
+                <td data-th-text="${order.datetime}">date</td>
+                <td data-th-text="${order.status}">status</td>
+                <td data-th-text="${order.orderSubscription.totalPriceAsString()}">total</td>
+                <td>
+                    <button type="submit" class="btn btn-primary btn-sm" data-th-if="${order.status}=='REJECTED'">Pay</button>
+                </td>
+            </form>
+        </tr>
 
-    </tbody>
+        </tbody>
     </table>
     <hr>
     <h3>Service Activation Schedule</h3>

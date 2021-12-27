@@ -1,6 +1,7 @@
 package it.polimi.db69.telco.telcoweb.controllers;
 
 import it.polimi.db69.telco.telcoejb.entities.User;
+import it.polimi.db69.telco.telcoejb.services.OrderService;
 import it.polimi.db69.telco.telcoejb.services.UserService;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -16,6 +17,9 @@ import java.io.IOException;
 @WebServlet(name = "UserProfileServlet", value = "/userprofile")
 public class UserProfileServlet extends HttpServlet {
     TemplateEngine templateEngine;
+
+    @EJB(name = "it.polimi.db69.telco.telcoejb.services/UserService")
+    private UserService userService;
 
     @Override
     public void init() throws ServletException {
@@ -37,6 +41,7 @@ public class UserProfileServlet extends HttpServlet {
 
         if(request.getSession().getAttribute("user") != null){
             User user = (User) request.getSession().getAttribute("user");
+            user = userService.findUserById(user.getId());
             ctx.setVariable("user", user.getUsername());
             ctx.setVariable("orders", user.getUserOrders());
         }
@@ -46,8 +51,8 @@ public class UserProfileServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getSession().setAttribute("orderId", request.getAttribute("orderId"));
-        request.getSession().setAttribute("amount", request.getAttribute("amount"));
+        request.getSession().setAttribute("orderId", Integer.parseInt(request.getParameter("orderId")));
+        request.getSession().setAttribute("amount", Double.parseDouble(request.getParameter("amount")));
         response.sendRedirect(getServletContext().getContextPath() + "/payment");
     }
 }
