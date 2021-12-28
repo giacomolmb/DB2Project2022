@@ -6,6 +6,7 @@ begin
 	if (new.order_status = "ACCEPTED") then
 		if((select vpid from salesreport where orderid = new.id) not in (select vpid from packagesales)) then
 			insert into packagesales values (
+				(select VP.packageid from salesreport as SP, validityperiod as VP where SP.orderid = new.id and SP.vpid = VP.id),
 				(select vpid from salesreport where orderid = new.id),
                 1,
                 (select base_amount from salesreport where orderid = new.id),
