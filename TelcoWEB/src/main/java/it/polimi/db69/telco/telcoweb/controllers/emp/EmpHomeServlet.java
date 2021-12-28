@@ -51,12 +51,11 @@ public class EmpHomeServlet extends HttpServlet {
             ctx.setVariable("errorMessage", req.getSession().getAttribute("errorMessage"));
         }
 
-        if(employee != null){
-            ctx.setVariable("welcomeMessage", "Welcome back, " + employee.getUsername() + "!");
-        }
+        ctx.setVariable("welcomeMessage", "Welcome back, " + employee.getUsername() + "!");
 
         Collection<Product> products = productService.findAllProducts();
         ctx.setVariable("products", products);
+        ctx.setVariable("employee", employee.getUsername());
 
         String path = "/WEB-INF/employee/emphomepage.html";
 

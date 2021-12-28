@@ -1,13 +1,13 @@
 package it.polimi.db69.telco.telcoweb.controllers.emp;
 
-import it.polimi.db69.telco.telcoejb.entities.ServicePackage;
-import it.polimi.db69.telco.telcoejb.entities.User;
+import it.polimi.db69.telco.telcoejb.entities.PackageSales;
+import it.polimi.db69.telco.telcoejb.services.SalesReportService;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
-import org.thymeleaf.exceptions.TemplateAssertionException;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import javax.ejb.EJB;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
@@ -17,6 +17,9 @@ import java.util.Collection;
 @WebServlet(name = "SalesReportServlet", value = "/employee/salesreport")
 public class SalesReportServlet extends HttpServlet {
     TemplateEngine templateEngine;
+
+    @EJB(name = "it.polimi.db69.telco.telcoejb.services/SalesReportService")
+    private SalesReportService salesService;
 
     @Override
     public void init() throws ServletException {
@@ -35,6 +38,10 @@ public class SalesReportServlet extends HttpServlet {
         ServletContext servletContext = getServletContext();
         WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
         String path = "/WEB-INF/employee/salesreport.html";
+
+        Collection<PackageSales> sales = salesService.getAllSales();
+
+        ctx.setVariable("sales", sales);
 
         templateEngine.process(path, ctx, response.getWriter());
     }

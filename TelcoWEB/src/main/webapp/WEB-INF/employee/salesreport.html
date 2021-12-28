@@ -8,9 +8,71 @@
     <title>Sales Report</title>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand h1" th:href="@{homepage}">Telco Employees</a>
+            <ul class="navbar-nav float-end">
+                <li class="nav-item dropdown" th:if="${employee != null}">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${'Welcome back, ' + employee}">
+                        Welcome back, user!
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" th:href="@{../logout}">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
     <br>
     <div class="container">
         <h1>Sales Report</h1>
+        <hr>
+        <form method="post" data-th-action="@{'/employee/salesreport'}" class="row align-items-center" onsubmit="return onProductSubmit()">
+            <div class="col">
+                <h1 class="display-6">Filter sales: </h1>
+            </div>
+            <div class="col">
+                <label class="visually-hidden" for="packageId">Package ID</label>
+                <div class="input-group input-group-lg">
+                    <input type="text" class="form-control" id="packageId" name="packageId" placeholder="Package ID">
+                </div>
+            </div>
+
+            <div class="col">
+                <label class="visually-hidden" for="vpId">Validity period</label>
+                <div class="input-group input-group-lg">
+                    <input type="text" class="form-control" id="vpId" name="vpId" placeholder="Validity period">
+                </div>
+            </div>
+
+            <div class="col">
+                <button type="submit" class="btn btn-lg btn-primary">Filter</button>
+            </div>
+        </form>
+        <hr>
+        <h3> Orders </h3>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Package</th>
+                <th scope="col">Validity Period</th>
+                <th scope="col"># Sales</th>
+                <th scope="col">Base amount</th>
+                <th scope="col">Total amount</th>
+                <th scope="col">Total opt. products</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-th-each="sale : ${sales}">
+                <td data-th-text="${sale.servicePackage.name}">id</td>
+                <td data-th-text="${sale.validityPeriod.months + ' months'}">Months</td>
+                <td data-th-text="${sale.numSales}">#sales</td>
+                <td data-th-text="${sale.baseAmount}">#baseamount</td>
+                <td data-th-text="${sale.totalAmount}">#totalamount</td>
+                <td data-th-text="${sale.numProducts}">#numproducts</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </body>
 </html>

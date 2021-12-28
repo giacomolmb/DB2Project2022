@@ -27,7 +27,7 @@ public class ServicePackage {
     private Collection<Service> services;
 
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name="packageproduct",
             joinColumns=@JoinColumn(name="packageid"),
             inverseJoinColumns=@JoinColumn(name="productid"))
