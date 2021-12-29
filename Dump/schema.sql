@@ -61,7 +61,7 @@ CREATE TABLE `customer_order` (
   KEY `order_subscriptionid_idx` (`subscriptionId`),
   CONSTRAINT `order_subscriptionid` FOREIGN KEY (`subscriptionId`) REFERENCES `subscription` (`id`),
   CONSTRAINT `order_userid` FOREIGN KEY (`userid`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,6 +70,7 @@ CREATE TABLE `customer_order` (
 
 LOCK TABLES `customer_order` WRITE;
 /*!40000 ALTER TABLE `customer_order` DISABLE KEYS */;
+INSERT INTO `customer_order` VALUES (65,'2021-12-29 11:40:34','ACCEPTED',1,66),(66,'2021-12-29 11:40:50','ACCEPTED',1,67),(67,'2021-12-29 11:41:05','ACCEPTED',1,68),(68,'2021-12-29 11:41:26','ACCEPTED',5,69),(69,'2021-12-29 11:42:37','ACCEPTED',5,70),(70,'2021-12-29 11:47:49','ACCEPTED',1,71);
 /*!40000 ALTER TABLE `customer_order` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -192,7 +193,7 @@ CREATE TABLE `login_log` (
   PRIMARY KEY (`id`),
   KEY `userid_idx` (`userid`),
   CONSTRAINT `loginlog_userid` FOREIGN KEY (`userid`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -201,6 +202,7 @@ CREATE TABLE `login_log` (
 
 LOCK TABLES `login_log` WRITE;
 /*!40000 ALTER TABLE `login_log` DISABLE KEYS */;
+INSERT INTO `login_log` VALUES (69,'2021-12-29 12:40:24',1),(70,'2021-12-29 12:41:18',5),(71,'2021-12-29 12:42:01',1),(72,'2021-12-29 12:42:20',5),(73,'2021-12-29 12:47:38',1);
 /*!40000 ALTER TABLE `login_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -281,6 +283,7 @@ CREATE TABLE `packagesales` (
 
 LOCK TABLES `packagesales` WRITE;
 /*!40000 ALTER TABLE `packagesales` DISABLE KEYS */;
+INSERT INTO `packagesales` VALUES (29,17,1,192,912,1),(30,19,1,168,1128,2),(30,20,3,540,1620,2),(31,23,1,540,1620,2);
 /*!40000 ALTER TABLE `packagesales` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -435,7 +438,7 @@ CREATE TABLE `subscription` (
   PRIMARY KEY (`id`),
   KEY `subscription_vpid_idx` (`vpid`),
   CONSTRAINT `subscription_vpid` FOREIGN KEY (`vpid`) REFERENCES `validityperiod` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -444,6 +447,7 @@ CREATE TABLE `subscription` (
 
 LOCK TABLES `subscription` WRITE;
 /*!40000 ALTER TABLE `subscription` DISABLE KEYS */;
+INSERT INTO `subscription` VALUES (66,17,'2022-01-01'),(67,19,'2022-01-01'),(68,23,'2022-01-01'),(69,20,'2022-01-01'),(70,20,'2022-01-01'),(71,20,'2022-02-01');
 /*!40000 ALTER TABLE `subscription` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -470,6 +474,7 @@ CREATE TABLE `subscriptionproduct` (
 
 LOCK TABLES `subscriptionproduct` WRITE;
 /*!40000 ALTER TABLE `subscriptionproduct` DISABLE KEYS */;
+INSERT INTO `subscriptionproduct` VALUES (66,106),(67,106),(69,106),(67,107),(70,107),(68,110),(68,112);
 /*!40000 ALTER TABLE `subscriptionproduct` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -575,4 +580,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-29  9:38:10
+-- Dump completed on 2021-12-29 12:54:00
