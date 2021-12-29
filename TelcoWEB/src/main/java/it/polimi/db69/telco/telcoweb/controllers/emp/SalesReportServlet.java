@@ -47,6 +47,9 @@ public class SalesReportServlet extends HttpServlet {
         Collection<PackageSales> sales = salesService.getAllSales();
         Collection<ProductSales> products = productService.getSales();
 
+        if(ctx.containsVariable("sales")) ctx.removeVariable("sales");
+        if(ctx.containsVariable("products")) ctx.removeVariable("products");
+
         ctx.setVariable("sales", sales);
         ctx.setVariable("products", products);
 
