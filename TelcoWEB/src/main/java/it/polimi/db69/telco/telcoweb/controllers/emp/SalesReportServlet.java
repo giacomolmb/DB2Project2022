@@ -1,6 +1,8 @@
 package it.polimi.db69.telco.telcoweb.controllers.emp;
 
 import it.polimi.db69.telco.telcoejb.entities.PackageSales;
+import it.polimi.db69.telco.telcoejb.entities.ProductSales;
+import it.polimi.db69.telco.telcoejb.services.ProductService;
 import it.polimi.db69.telco.telcoejb.services.SalesReportService;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -21,6 +23,9 @@ public class SalesReportServlet extends HttpServlet {
     @EJB(name = "it.polimi.db69.telco.telcoejb.services/SalesReportService")
     private SalesReportService salesService;
 
+    @EJB(name = "it.polimi.db69.telco.telcoejb.services/ProductService")
+    private ProductService productService;
+
     @Override
     public void init() throws ServletException {
         ServletContext servletContext = getServletContext();
@@ -40,8 +45,10 @@ public class SalesReportServlet extends HttpServlet {
         String path = "/WEB-INF/employee/salesreport.html";
 
         Collection<PackageSales> sales = salesService.getAllSales();
+        Collection<ProductSales> products = productService.getSales();
 
         ctx.setVariable("sales", sales);
+        ctx.setVariable("products", products);
 
         templateEngine.process(path, ctx, response.getWriter());
     }

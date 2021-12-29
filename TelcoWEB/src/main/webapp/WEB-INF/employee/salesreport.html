@@ -73,6 +73,24 @@
             </tr>
             </tbody>
         </table>
+        <hr>
+        <h3> Products </h3>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Product name</th>
+                <th scope="col"># Sales</th>
+                <th scope="col">Value of sales</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-th-each="product : ${products}">
+                <td data-th-text="${product.name}">name</td>
+                <td data-th-text="${product.sales}">sales</td>
+                <td data-th-text="${product.salesValue}">salesValue</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </body>
 </html>

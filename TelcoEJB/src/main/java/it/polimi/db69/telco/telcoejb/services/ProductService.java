@@ -1,7 +1,7 @@
 package it.polimi.db69.telco.telcoejb.services;
 
 import it.polimi.db69.telco.telcoejb.entities.Product;
-import it.polimi.db69.telco.telcoejb.entities.ServicePackage;
+import it.polimi.db69.telco.telcoejb.entities.ProductSales;
 import it.polimi.db69.telco.telcoejb.exceptions.NonUniqueException;
 
 import javax.ejb.Stateless;
@@ -35,5 +35,13 @@ public class ProductService {
         em.persist(product);
 
         return product;
+    }
+
+    public Collection<ProductSales> getSales(){
+        return em.createNamedQuery("ProductReport.getAll", ProductSales.class).getResultList();
+    }
+
+    public ProductSales getSingleProductSales(Product product){
+        return em.find(ProductSales.class, product.getId());
     }
 }
