@@ -41,7 +41,8 @@ public class ProductService {
         return em.createNamedQuery("ProductReport.getAll", ProductSales.class).getResultList();
     }
 
-    public ProductSales getSingleProductSales(Product product){
-        return em.find(ProductSales.class, product.getId());
+    public Collection<ProductSales> getSingleProductSales(int productId){ //very bad coding
+        Product product = this.findProductById(productId);
+        return em.createNamedQuery("ProductReport.getById", ProductSales.class).setParameter("product", product).getResultList();
     }
 }

@@ -5,16 +5,19 @@ import it.polimi.db69.telco.telcoejb.entities.ServicePackage;
 import it.polimi.db69.telco.telcoejb.entities.User;
 import it.polimi.db69.telco.telcoejb.entities.ValidityPeriod;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Collection;
-import java.util.List;
 
 @Stateless
 public class SalesReportService {
     @PersistenceContext(unitName = "TELCOEJB")
     private EntityManager em;
+
+    @EJB(name = "it.polimi.db69.telco.telcoejb.services/ServicePackageService")
+    private ServicePackageService packageService;
 
     public Collection<PackageSales> getAllSales(){
         return em.createNamedQuery("Sales.getAll", PackageSales.class).getResultList();
@@ -28,9 +31,10 @@ public class SalesReportService {
         else return salesList;
     }
 
-    public Collection<PackageSales> getSalesByPackage(ServicePackage servicePackage){
+    public Collection<PackageSales> getSalesByPackage(int packageId){
+        ServicePackage servicePackage = packageService.findPackageById(packageId);
         Collection<PackageSales> salesList = null;
-        salesList = em.createNamedQuery("Sales.getByPackageId", PackageSales.class)
+        salesList = em.createNamedQuery("Sales.getByPackage", PackageSales.class)
                 .setParameter("package", servicePackage).getResultList();
         if(salesList.isEmpty()) return null;
         else return salesList;

@@ -30,21 +30,22 @@
         <hr>
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="package-tab" data-bs-toggle="tab" data-bs-target="#package" type="button" role="tab" aria-controls="package" aria-selected="true">Packages</button>
+                <button th:attr="class=${activeTab == 1 ? 'nav-link active' : 'nav-link'}" id="package-tab" data-bs-toggle="tab" data-bs-target="#package" type="button" role="tab" aria-controls="package" aria-selected="true">Packages</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="product-tab" data-bs-toggle="tab" data-bs-target="#product" type="button" role="tab" aria-controls="product" aria-selected="false">Products</button>
+                <button th:attr="class=${activeTab == 2 ? 'nav-link active' : 'nav-link'}" id="product-tab" data-bs-toggle="tab" data-bs-target="#product" type="button" role="tab" aria-controls="product" aria-selected="false">Products</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="user-tab" data-bs-toggle="tab" data-bs-target="#user" type="button" role="tab" aria-controls="user" aria-selected="false">Users</button>
+                <button th:attr="class=${activeTab == 3 ? 'nav-link active' : 'nav-link'}" id="user-tab" data-bs-toggle="tab" data-bs-target="#user" type="button" role="tab" aria-controls="user" aria-selected="false">Users</button>
             </li>
         </ul>
 
         <div class="tab-content" id="myTabContent">
 
-            <div class="tab-pane fade show active" id="package" role="tabpanel" aria-labelledby="package-tab">
+            <div th:attr="class=${activeTab == 1 ? 'tab-pane fade show active' : 'tab-pane fade'}" id="package" role="tabpanel" aria-labelledby="package-tab">
                 <h1 class="display-4">Packages</h1>
-                <form method="post" data-th-action="@{'/employee/salesreport'}" class="row align-items-center" onsubmit="return onProductSubmit()">
+                <form method="get" name="filterPackages" id="filterPackages" data-th-action="@{'salesreport'}" class="row align-items-center">
+                    <input type="hidden" name="type" value="filterPackages"/>
                     <div class="col">
                         <h1 class="display-6">Filter packages:</h1>
                     </div>
@@ -66,6 +67,7 @@
                 <table class="table table-striped">
                     <thead>
                     <tr>
+                        <th scope="col">ID</th>
                         <th scope="col">Package</th>
                         <th scope="col">Validity Period</th>
                         <th scope="col"># Sales</th>
@@ -76,7 +78,8 @@
                     </thead>
                     <tbody>
                     <tr data-th-each="sale : ${sales}">
-                        <td data-th-text="${sale.servicePackage.name}">id</td>
+                        <th scope="row" data-th-text="${sale.servicePackage.id}">Id</th>
+                        <td data-th-text="${sale.servicePackage.name}">name</td>
                         <td data-th-text="${sale.validityPeriod.months + ' months'}">Months</td>
                         <td data-th-text="${sale.numSales}">#sales</td>
                         <td data-th-text="${sale.baseAmount}">#baseamount</td>
@@ -87,17 +90,18 @@
                 </table>
             </div>
 
-            <div class="tab-pane fade" id="product" role="tabpanel" aria-labelledby="product-tab">
+            <div th:attr="class=${activeTab == 2 ? 'tab-pane fade show active' : 'tab-pane fade'}" id="product" role="tabpanel" aria-labelledby="product-tab">
                 <h1 class="display-4">Products</h1>
-                <form method="post" data-th-action="@{'/employee/salesreport'}" class="row align-items-center" onsubmit="return onProductSubmit()">
+                <form method="get" name="filterProducts" id="filterProducts" data-th-action="@{'salesreport'}" class="row align-items-center">
+                    <input type="hidden" name="type" value="filterProducts"/>
                     <div class="col">
                         <h1 class="display-6">Filter products:</h1>
                     </div>
 
                     <div class="col">
-                        <label class="visually-hidden" for="productName">Product name</label>
+                        <label class="visually-hidden" for="productId">Product name</label>
                         <div class="input-group input-group-lg">
-                            <input type="text" class="form-control" id="productName" name="productName" placeholder="Product name">
+                            <input type="text" class="form-control" id="productId" name="productId" placeholder="Product ID">
                         </div>
                     </div>
                     <div class="col">
@@ -110,6 +114,7 @@
                 <table class="table table-striped">
                     <thead>
                     <tr>
+                        <th scope="col">ID</th>
                         <th scope="col">Product name</th>
                         <th scope="col"># Sales</th>
                         <th scope="col">Value of sales</th>
@@ -117,6 +122,7 @@
                     </thead>
                     <tbody>
                     <tr data-th-each="product : ${products}">
+                        <th scope="row" data-th-text="${product.product.id}">id</th>
                         <td data-th-text="${product.name}">name</td>
                         <td data-th-text="${product.sales}">sales</td>
                         <td data-th-text="${product.salesValue}">salesValue</td>
@@ -124,10 +130,34 @@
                     </tbody>
                 </table>
             </div>
-            <div class="tab-pane fade" id="user" role="tabpanel" aria-labelledby="user-tab">
+            <div th:attr="class=${activeTab == 3 ? 'tab-pane fade show active' : 'tab-pane fade'}" id="user" role="tabpanel" aria-labelledby="user-tab">
                 <h1 class="display-4">Users</h1>
+                <form method="get" name="insolventUsers" id="insolventUsers" data-th-action="@{'salesreport'}">
+                    <div class="form-check">
+                        <input type="hidden" name="type" value="insolventUsers"/>
+                        <input class="form-check-input" type="checkbox" id="insolvent" name="insolvent" onChange="this.form.submit()" th:attr="checked=${insolvent}">
+                        <label class="form-check-label" for="insolvent">
+                            Only insolvent users
+                        </label>
+                    </div>
+                </form>
                 <hr>
-                <h1 class="display-6">Work in progress...</h1>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Username</th>
+                        <th scope="col">Email</th>
+                        <th scope="col"><span></span></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-th-each="user : ${users}">
+                        <td data-th-text="${user.username}">name</td>
+                        <td data-th-text="${user.email}">sales</td>
+                        <td><span></span></td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
         <br>

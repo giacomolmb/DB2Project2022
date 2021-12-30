@@ -24,9 +24,6 @@ import java.util.Collection;
 public class HomepageServlet extends HttpServlet {
     private TemplateEngine templateEngine;
 
-    @EJB(name = "it.polimi.db69.telco.telcoejb.services/UserService")
-    private UserService userService;
-
     @EJB(name = "it.polimi.db69.telco.telcoejb.services/ServicePackageService")
     private ServicePackageService servicePackageService;
 

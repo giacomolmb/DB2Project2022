@@ -8,6 +8,7 @@ import javax.ejb.Stateless;
 import javax.persistence.*;
 import javax.security.auth.login.CredentialException;
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.List;
 
 @Stateless
@@ -54,6 +55,14 @@ public class UserService {
         user.addUserLogin(loginLog);
 
         em.persist(user);
+    }
+
+    public Collection<User> getAllUsers(){
+        return em.createNamedQuery("User.getAllUsers", User.class).getResultList();
+    }
+
+    public Collection<User> getInsolventUsers(){
+        return em.createNamedQuery("User.getInsolventUsers", User.class).getResultList();
     }
 }
 

@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name="packagesales")
 @NamedQueries({
         @NamedQuery(name = "Sales.getAll", query = "SELECT s FROM PackageSales s ORDER BY s.totalAmount DESC"),
-        @NamedQuery(name = "Sales.getByPackageId", query = "SELECT s FROM PackageSales s WHERE s.servicePackage = :package ORDER BY s.totalAmount DESC"),
+        @NamedQuery(name = "Sales.getByPackage", query = "SELECT s FROM PackageSales s WHERE s.servicePackage = :package ORDER BY s.totalAmount DESC"),
         @NamedQuery(name = "Sales.getByVp", query = "SELECT s FROM PackageSales s WHERE s.validityPeriod = :vp ORDER BY s.totalAmount DESC"),
 })
 public class PackageSales {
