@@ -26,7 +26,16 @@
     </nav>
     <br>
     <div class="container">
-        <h1>Sales Report</h1>
+        <div class="row">
+            <div class="col">
+                <h1>Sales report</h1>
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-primary btn-lg float-end" data-bs-toggle="modal" data-bs-target="#alertModal">
+                    View alerts
+                </button>
+            </div>
+        </div>
         <hr>
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
@@ -37,6 +46,9 @@
             </li>
             <li class="nav-item" role="presentation">
                 <button th:attr="class=${activeTab == 3 ? 'nav-link active' : 'nav-link'}" id="user-tab" data-bs-toggle="tab" data-bs-target="#user" type="button" role="tab" aria-controls="user" aria-selected="false">Users</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button th:attr="class=${activeTab == 4 ? 'nav-link active' : 'nav-link'}" id="order-tab" data-bs-toggle="tab" data-bs-target="#order" type="button" role="tab" aria-controls="order" aria-selected="false">Orders</button>
             </li>
         </ul>
 
@@ -159,8 +171,85 @@
                     </tbody>
                 </table>
             </div>
+            <div th:attr="class=${activeTab == 4 ? 'tab-pane fade show active' : 'tab-pane fade'}" id="order" role="tabpanel" aria-labelledby="order-tab">
+                <h1 class="display-4">Suspended orders</h1>
+                <form method="get" name="filterOrders" id="filterOrders" data-th-action="@{'salesreport'}" class="row align-items-center">
+                    <input type="hidden" name="type" value="filterOrders"/>
+                    <div class="col">
+                        <h1 class="display-6">Filter orders:</h1>
+                    </div>
+
+                    <div class="col">
+                        <label class="visually-hidden" for="username">Username</label>
+                        <div class="input-group input-group-lg">
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <button type="submit" class="btn btn-lg btn-primary">Filter</button>
+                    </div>
+                    <div class="col">
+                        <span></span>
+                    </div>
+                </form>
+                <hr>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Package</th>
+                        <th scope="col">Validity</th>
+                        <th scope="col"># Opt. Products</th>
+                        <th scope="col">Amount</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-th-each="order : ${orders}">
+                        <td data-th-text="${order.order.id}">orderid</td>
+                        <td data-th-text="${order.order.datetime}">datetime</td>
+                        <td data-th-text="${order.user.username}">username</td>
+                        <td data-th-text="${order.vp.vpPackage.name}">vp</td>
+                        <td data-th-text="${order.vp.months + ' months'}">vp</td>
+                        <td data-th-text="${order.numProducts}">products</td>
+                        <td data-th-text="${order.totalAmount}">amount</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <br>
+
+        <div class="modal fade" id="alertModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <h1 class="display-6">Alerts</h1>
+                        <hr>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">Username</th>
+                                <th scope="col">Datetime</th>
+                                <th scope="col">Amount</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr data-th-each="alert : ${alerts}">
+                                <td data-th-text="${alert.alertUser.username}">name</td>
+                                <td data-th-text="${alert.datetime}">datetime</td>
+                                <td data-th-text="${alert.amount}">amount</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

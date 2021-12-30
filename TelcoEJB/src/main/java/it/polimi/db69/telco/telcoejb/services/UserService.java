@@ -1,5 +1,6 @@
 package it.polimi.db69.telco.telcoejb.services;
 
+import it.polimi.db69.telco.telcoejb.entities.Alert;
 import it.polimi.db69.telco.telcoejb.entities.LoginLog;
 import it.polimi.db69.telco.telcoejb.entities.User;
 
@@ -30,12 +31,16 @@ public class UserService {
         return em.find(User.class, userId);
     }
 
+    public User findUserByUsername(String username){
+        return em.createNamedQuery("User.getFromUsername", User.class).setParameter("username", username).getSingleResult();
+    }
+
     public User createUser(String email, String username, String password) throws CredentialException {
-        if (em.createNamedQuery("user.getFromEmail", User.class)
+        if (em.createNamedQuery("User.getFromEmail", User.class)
                 .setParameter("email", email).setMaxResults(1).getResultStream().findFirst().orElse(null) != null)
             throw new CredentialException("Email already in use by another account");
 
-        else if (em.createNamedQuery("user.getFromUsername", User.class)
+        else if (em.createNamedQuery("User.getFromUsername", User.class)
                 .setParameter("username", username).setMaxResults(1).getResultStream().findFirst().orElse(null) != null)
             throw new CredentialException("Email already in use by another account");
 

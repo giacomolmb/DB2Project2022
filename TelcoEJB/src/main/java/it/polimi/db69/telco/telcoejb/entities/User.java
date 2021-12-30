@@ -10,8 +10,8 @@ import java.util.Collection;
         @NamedQuery(name = "User.checkCredentials", query = "SELECT u FROM User u WHERE u.username = ?1 AND u.password = ?2"),
         @NamedQuery(name = "User.getAllUsers", query = "SELECT u FROM User u"),
         @NamedQuery(name = "User.getInsolventUsers", query = "SELECT u FROM User u WHERE u.insolvent = 1"),
-        @NamedQuery(name = "user.getFromEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
-        @NamedQuery(name = "user.getFromUsername", query = "SELECT u FROM User u WHERE u.username = :username")
+        @NamedQuery(name = "User.getFromEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
+        @NamedQuery(name = "User.getFromUsername", query = "SELECT u FROM User u WHERE u.username = :username")
 })
 public class User {
     @Id

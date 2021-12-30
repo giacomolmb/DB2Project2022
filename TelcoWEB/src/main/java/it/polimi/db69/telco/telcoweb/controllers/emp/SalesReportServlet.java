@@ -1,11 +1,7 @@
 package it.polimi.db69.telco.telcoweb.controllers.emp;
 
-import it.polimi.db69.telco.telcoejb.entities.PackageSales;
-import it.polimi.db69.telco.telcoejb.entities.ProductSales;
-import it.polimi.db69.telco.telcoejb.entities.User;
-import it.polimi.db69.telco.telcoejb.services.ProductService;
-import it.polimi.db69.telco.telcoejb.services.SalesReportService;
-import it.polimi.db69.telco.telcoejb.services.UserService;
+import it.polimi.db69.telco.telcoejb.entities.*;
+import it.polimi.db69.telco.telcoejb.services.*;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -35,6 +31,12 @@ public class SalesReportServlet extends HttpServlet {
     @EJB(name = "it.polimi.db69.telco.telcoejb.services/UserService")
     private UserService userService;
 
+    @EJB(name = "it.polimi.db69.telco.telcoejb.services/OrderService")
+    private OrderService orderService;
+
+    @EJB(name = "it.polimi.db69.telco.telcoejb.services/AlertService")
+    private AlertService alertService;
+
     @Override
     public void init() throws ServletException {
         ServletContext servletContext = getServletContext();
@@ -56,6 +58,8 @@ public class SalesReportServlet extends HttpServlet {
         Collection<PackageSales> sales = salesService.getAllSales();
         Collection<ProductSales> products = productService.getSales();
         Collection<User> users = userService.getInsolventUsers();
+        Collection<OrderReport> orders = orderService.getRejectedOrders();
+        Collection<Alert> alerts = alertService.getAlerts();
 
         if(request.getParameter("type") != null){
             if(Objects.equals(request.getParameter("type"), "insolventUsers")){
@@ -77,14 +81,23 @@ public class SalesReportServlet extends HttpServlet {
                 }
                 ctx.setVariable("activeTab", 2);
             }
+            if(Objects.equals(request.getParameter("type"), "filterOrders")){
+                if(!Objects.equals(request.getParameter("username"), "")){
+                    orders = orderService.getRejectedOrdersByUser(request.getParameter("username"));
+                }
+                ctx.setVariable("activeTab", 4);
+            }
         } else {
             ctx.setVariable("activeTab", 1);
         }
 
+        ctx.setVariable("employee", ((Employee) request.getSession().getAttribute("employee")).getUsername());
         ctx.setVariable("insolvent", this.onlyInsolventUsers);
         ctx.setVariable("sales", sales);
         ctx.setVariable("products", products);
         ctx.setVariable("users", users);
+        ctx.setVariable("orders", orders);
+        ctx.setVariable("alerts", alerts);
 
         templateEngine.process(path, ctx, response.getWriter());
     }

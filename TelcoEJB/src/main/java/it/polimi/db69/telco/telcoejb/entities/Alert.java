@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "alert")
+@NamedQuery(name = "Alert.getAll", query = "SELECT a FROM Alert a")
 public class Alert {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

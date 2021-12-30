@@ -1,9 +1,6 @@
 package it.polimi.db69.telco.telcoejb.services;
 
-import it.polimi.db69.telco.telcoejb.entities.Order;
-import it.polimi.db69.telco.telcoejb.entities.Product;
-import it.polimi.db69.telco.telcoejb.entities.Subscription;
-import it.polimi.db69.telco.telcoejb.entities.User;
+import it.polimi.db69.telco.telcoejb.entities.*;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -79,5 +76,14 @@ public class OrderService {
         em.merge(order);
 
         em.flush();
+    }
+
+    public Collection<OrderReport> getRejectedOrders(){
+        return em.createNamedQuery("OrderReport.getRejected", OrderReport.class).getResultList();
+    }
+
+    public Collection<OrderReport> getRejectedOrdersByUser(String username){
+        User user = userService.findUserByUsername(username);
+        return em.createNamedQuery("OrderReport.getRejectedByUser", OrderReport.class).setParameter("user", user).getResultList();
     }
 }
