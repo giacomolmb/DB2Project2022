@@ -44,8 +44,8 @@ public class UserProfileServlet extends HttpServlet {
             user = userService.findUserById(user.getId());
             ctx.setVariable("user", user.getUsername());
             ctx.setVariable("orders", user.getUserOrders());
+            ctx.setVariable("activeorders", user.getActiveOrders());
         }
-
         templateEngine.process(path, ctx, response.getWriter());
     }
 

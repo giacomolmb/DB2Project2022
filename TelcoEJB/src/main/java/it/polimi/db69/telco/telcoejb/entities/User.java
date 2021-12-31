@@ -2,6 +2,7 @@ package it.polimi.db69.telco.telcoejb.entities;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
@@ -116,5 +117,18 @@ public class User {
     public void addUserLogin(LoginLog loginLog){
         this.userLogins.add(loginLog);
         loginLog.setLoggedUser(this);
+    }
+
+    public Collection<Order> getActiveOrders(){
+        ArrayList<Order> activeOrders = new ArrayList<>();
+        if (!userOrders.isEmpty()) {
+            for (Order order : userOrders) {
+                if (order.getStatus().equals("ACCEPTED"))
+                    activeOrders.add(order);
+            }
+        }
+
+        if (activeOrders.isEmpty()) return null;
+        else return activeOrders;
     }
 }
