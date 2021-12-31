@@ -2,6 +2,7 @@ package it.polimi.db69.telco.telcoweb.controllers;
 
 import it.polimi.db69.telco.telcoejb.entities.ServicePackage;
 import it.polimi.db69.telco.telcoejb.entities.User;
+import it.polimi.db69.telco.telcoejb.services.OrderService;
 import it.polimi.db69.telco.telcoejb.services.ServicePackageService;
 import it.polimi.db69.telco.telcoejb.services.UserService;
 import org.thymeleaf.TemplateEngine;
@@ -27,6 +28,8 @@ public class HomepageServlet extends HttpServlet {
     @EJB(name = "it.polimi.db69.telco.telcoejb.services/ServicePackageService")
     private ServicePackageService servicePackageService;
 
+    @EJB(name = "it.polimi.db69.telco.telcoejb.services/OrderService")
+    private OrderService orderService;
 
     @Override
     public void init() throws ServletException {
@@ -57,6 +60,9 @@ public class HomepageServlet extends HttpServlet {
         if(session.getAttribute("user") != null){
             User user = (User) session.getAttribute("user");
             ctx.setVariable("user", user.getUsername());
+            if(orderService.getRejectedOrdersByUser(user.getUsername()).size() != 0){
+                ctx.setVariable("pendingOrders", true);
+            }
         }
         if(req.getSession().getAttribute("successMessage") != null){
             ctx.setVariable("successMessage", req.getSession().getAttribute("successMessage"));

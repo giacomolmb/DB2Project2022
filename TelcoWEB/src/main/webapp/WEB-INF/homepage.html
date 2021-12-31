@@ -40,6 +40,9 @@
         <div data-th-if=${successMessage!=null} class="alert alert-success" role="alert" data-th-text="${successMessage}">
             Success
         </div>
+        <div th:if="${pendingOrders}" class="alert alert-warning" role="alert">
+            You have pending orders. Check them out in your <a th:href="@{userprofile}">user profile page</a>.
+        </div>
         <h3>Service Packages</h3>
 
         <div class="card m-3" data-th-if="${packages == null}" >
@@ -49,9 +52,7 @@
                 </h3>
             </div>
         </div>
-
-
-
+        
         <div data-th-if="${packages != null}">
             <div class="card m-3" data-th-each="package : ${packages}">
                 <div class="card-body">
