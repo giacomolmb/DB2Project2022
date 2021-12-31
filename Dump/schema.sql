@@ -61,7 +61,7 @@ CREATE TABLE `customer_order` (
   KEY `order_subscriptionid_idx` (`subscriptionId`),
   CONSTRAINT `order_subscriptionid` FOREIGN KEY (`subscriptionId`) REFERENCES `subscription` (`id`),
   CONSTRAINT `order_userid` FOREIGN KEY (`userid`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,7 +70,7 @@ CREATE TABLE `customer_order` (
 
 LOCK TABLES `customer_order` WRITE;
 /*!40000 ALTER TABLE `customer_order` DISABLE KEYS */;
-INSERT INTO `customer_order` VALUES (65,'2021-12-29 11:40:34','ACCEPTED',1,66),(66,'2021-12-29 11:40:50','ACCEPTED',1,67),(67,'2021-12-29 11:41:05','ACCEPTED',1,68),(68,'2021-12-29 11:41:26','ACCEPTED',5,69),(69,'2021-12-29 11:42:37','ACCEPTED',5,70),(70,'2021-12-29 11:47:49','ACCEPTED',1,71);
+INSERT INTO `customer_order` VALUES (65,'2021-12-29 11:40:34','ACCEPTED',1,66),(66,'2021-12-29 11:40:50','ACCEPTED',1,67),(67,'2021-12-29 11:41:05','ACCEPTED',1,68),(68,'2021-12-29 11:41:26','ACCEPTED',5,69),(69,'2021-12-29 11:42:37','ACCEPTED',5,70),(70,'2021-12-29 11:47:49','ACCEPTED',1,71),(71,'2021-12-30 14:15:12','REJECTED',1,72),(72,'2021-12-30 14:24:46','REJECTED',5,73);
 /*!40000 ALTER TABLE `customer_order` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -86,32 +86,6 @@ DELIMITER ;;
 	IF new.order_status = "REJECTED" THEN
 		UPDATE user SET insolvent = 1 WHERE user.id = new.userid;
         END IF;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `raiseAlert` AFTER UPDATE ON `customer_order` FOR EACH ROW BEGIN 
-	IF new.order_status = "REJECTED" THEN
-		IF(
-			(SELECT COUNT(*) FROM customer_order WHERE userid = new.userid AND order_status = "REJECTED") > 2
-            AND 
-            (new.userid NOT IN (SELECT userid FROM alert))
-		) THEN
-			INSERT INTO alert (userId, datetime, amount) VALUES (new.userid, NOW(), 
-				(SELECT total_amount FROM salesreport WHERE orderid = new.id));
-		END IF;
-	END IF;
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -147,6 +121,35 @@ DELIMITER ;;
 		end if;
 	end if;
 end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `raiseAlert` AFTER UPDATE ON `customer_order` FOR EACH ROW BEGIN 
+	IF new.order_status = "REJECTED" THEN
+		IF(new.userid NOT IN (select userid FROM alert)) THEN 
+			IF(
+				(SELECT COUNT(*) FROM customer_order WHERE userid = new.userid AND order_status = "REJECTED") > 2
+			) THEN
+				INSERT INTO alert (userId, datetime, amount) VALUES (new.userid, NOW(), 
+					(SELECT total_amount FROM salesreport WHERE orderid = new.id));
+			END IF;
+		ELSE 
+			UPDATE alert SET amount = amount + (SELECT total_amount FROM salesreport WHERE orderid = new.id)
+            WHERE userid = new.userid;
+        END IF;
+	END IF;
+END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -193,7 +196,7 @@ CREATE TABLE `login_log` (
   PRIMARY KEY (`id`),
   KEY `userid_idx` (`userid`),
   CONSTRAINT `loginlog_userid` FOREIGN KEY (`userid`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -202,7 +205,7 @@ CREATE TABLE `login_log` (
 
 LOCK TABLES `login_log` WRITE;
 /*!40000 ALTER TABLE `login_log` DISABLE KEYS */;
-INSERT INTO `login_log` VALUES (69,'2021-12-29 12:40:24',1),(70,'2021-12-29 12:41:18',5),(71,'2021-12-29 12:42:01',1),(72,'2021-12-29 12:42:20',5),(73,'2021-12-29 12:47:38',1);
+INSERT INTO `login_log` VALUES (69,'2021-12-29 12:40:24',1),(70,'2021-12-29 12:41:18',5),(71,'2021-12-29 12:42:01',1),(72,'2021-12-29 12:42:20',5),(73,'2021-12-29 12:47:38',1),(74,'2021-12-29 19:55:29',1),(75,'2021-12-30 09:17:12',1),(76,'2021-12-30 15:15:01',1),(77,'2021-12-30 15:24:38',5);
 /*!40000 ALTER TABLE `login_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -438,7 +441,7 @@ CREATE TABLE `subscription` (
   PRIMARY KEY (`id`),
   KEY `subscription_vpid_idx` (`vpid`),
   CONSTRAINT `subscription_vpid` FOREIGN KEY (`vpid`) REFERENCES `validityperiod` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -447,7 +450,7 @@ CREATE TABLE `subscription` (
 
 LOCK TABLES `subscription` WRITE;
 /*!40000 ALTER TABLE `subscription` DISABLE KEYS */;
-INSERT INTO `subscription` VALUES (66,17,'2022-01-01'),(67,19,'2022-01-01'),(68,23,'2022-01-01'),(69,20,'2022-01-01'),(70,20,'2022-01-01'),(71,20,'2022-02-01');
+INSERT INTO `subscription` VALUES (66,17,'2022-01-01'),(67,19,'2022-01-01'),(68,23,'2022-01-01'),(69,20,'2022-01-01'),(70,20,'2022-01-01'),(71,20,'2022-02-01'),(72,17,'2022-01-01'),(73,17,'2022-01-01');
 /*!40000 ALTER TABLE `subscription` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -503,7 +506,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'admin','admin','admin@telco.com',1),(5,'giacomino','giacomino','giacomino@gmail.com',0),(6,'valeria','valeria9','valeria@gmail.com',0),(7,'leomessi','leomessi','leomessi@mail.com',0);
+INSERT INTO `user` VALUES (1,'admin','admin','admin@telco.com',1),(5,'giacomino','giacomino','giacomino@gmail.com',1),(6,'valeria','valeria9','valeria@gmail.com',0),(7,'leomessi','leomessi','leomessi@mail.com',0);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -580,4 +583,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-29 12:54:00
+-- Dump completed on 2021-12-31  9:17:41
