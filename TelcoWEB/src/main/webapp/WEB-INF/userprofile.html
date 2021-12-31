@@ -38,9 +38,38 @@
         </h3>
     </div>
 </div>
+<div class="card m-3" data-th-if="${orders != null}" >
+    <div class="card-body">
+    <div class="accordion" id="ServiceActivationSchedule">
+    <h1>User Profile </h1>
+    <h3> Service Activation Schedule</h3>
+    <div class="accordion-item" data-th-each="order : ${orders}">
+        <h2 class="accordion-header"  data-th-id="${'order' + order.id}" >
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" th:attr="data-bs-target=${'subs' + order.id}" aria-expanded="true" aria-controls="collapseOne"
+            data-th-text="${order.orderSubscription.getSubValidityPeriod().getVpPackage().name}">
+                Service Package Name
+            </button>
+        </h2>
+        <div  data-th-id="${'subs' + order.id}" class="accordion-collapse collapse show" th:attr="aria-labelledby=${'order' + order.id}" data-bs-parent="ServiceActivationSchedule">
+            <div class="accordion-body">
+                <dt class="col-sm-3">Services</dt>
+                <dd class="col-sm-9">
+                    <p data-th-each="service : ${order.orderSubscription.getSubValidityPeriod().getVpPackage().services}" data-th-text="${service.printService()}">Service</p>
+                </dd>
+
+                <dt class="col-sm-3">Optional Products</dt>
+                <dd class="col-sm-9">
+                    <p data-th-each="product : ${order.orderSubscription.subscriptionProducts}" data-th-text="${product.name}">Product</p>
+                </dd>
+            </div>
+        </div>
+
+    </div>
+</div>
+    </div>
+</div>
+
 <div class="container" data-th-if="${orders != null}">
-    <h1>User Profile</h1>
-    <hr>
     <h3> Orders </h3>
     <table class="table table-striped">
         <thead>
@@ -70,9 +99,6 @@
 
         </tbody>
     </table>
-    <hr>
-    <h3>Service Activation Schedule</h3>
-
 </div>
 </body>
 </html>
