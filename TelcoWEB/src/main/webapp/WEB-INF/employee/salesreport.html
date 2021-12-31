@@ -85,7 +85,8 @@
                         <th scope="col"># Sales</th>
                         <th scope="col">Base amount</th>
                         <th scope="col">Total amount</th>
-                        <th scope="col">Total opt. products</th>
+                        <th scope="col">Total products</th>
+                        <th scope="col">Avg. products</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -97,6 +98,7 @@
                         <td data-th-text="${sale.baseAmount}">#baseamount</td>
                         <td data-th-text="${sale.totalAmount}">#totalamount</td>
                         <td data-th-text="${sale.numProducts}">#numproducts</td>
+                        <td data-th-text="${sale.avgProducts}">#avgproducts</td>
                     </tr>
                     </tbody>
                 </table>

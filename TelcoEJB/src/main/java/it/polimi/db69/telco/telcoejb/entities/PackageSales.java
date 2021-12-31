@@ -54,4 +54,8 @@ public class PackageSales {
     public int getNumProducts() {
         return numProducts;
     }
+
+    public int getAvgProducts(){
+        return Math.round(numProducts/(float) numSales);
+    }
 }
