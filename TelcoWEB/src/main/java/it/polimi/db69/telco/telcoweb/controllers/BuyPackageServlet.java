@@ -70,6 +70,8 @@ public class BuyPackageServlet extends HttpServlet {
         java.util.Date startDate;
         try {
             startDate = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("startDate"));
+
+
             Date startSQLDate =  new java.sql.Date(startDate.getTime());
 
             int vpId = Integer.parseInt(request.getParameter("vp"));
