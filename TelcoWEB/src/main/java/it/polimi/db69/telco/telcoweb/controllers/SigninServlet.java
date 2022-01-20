@@ -57,19 +57,6 @@ public class SigninServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        try {
-            checkInputs(username, password);
-        } catch (InputException e){
-            response.setContentType("text/html");
-
-            ServletContext servletContext = getServletContext();
-            final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-            ctx.setVariable("signinErrorMessage", e.getMessage());
-
-            templateEngine.process(path, ctx, response.getWriter());
-            return;
-        }
-
         User user;
         try {
             user = userService.checkCredentials(username, password);
@@ -87,14 +74,6 @@ public class SigninServlet extends HttpServlet {
 
             templateEngine.process(path, ctx, response.getWriter());
         } else {
-            /*
-            try {
-                userService.addLoginLog(user.getId());
-            } catch (BadUserException e) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
-                return;
-            }
-            */
             userService.addLog(user.getId());
             request.getSession().setAttribute("user", user);
             if(request.getSession().getAttribute("origin") == null){
@@ -102,16 +81,6 @@ public class SigninServlet extends HttpServlet {
             } else {
                 response.sendRedirect(getServletContext().getContextPath() + request.getSession().getAttribute("origin"));
             }
-        }
-    }
-
-    private void checkInputs(String username, String password) throws InputException {
-        if(username == null || username.isEmpty()){
-            throw new InputException("Please insert a username!");
-        }
-
-        if(password == null || password.isEmpty()){
-            throw new InputException("Please insert a password!");
         }
     }
 }
