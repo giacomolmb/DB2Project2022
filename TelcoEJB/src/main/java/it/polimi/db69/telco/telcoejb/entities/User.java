@@ -35,10 +35,10 @@ public class User {
     @OneToMany(mappedBy = "alertUser")
     private Collection<Alert> userAlerts;
 
-    @OneToMany(mappedBy = "orderUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "orderUser", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Collection<Order> userOrders;
 
-    @OneToMany(mappedBy = "loggedUser", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "loggedUser", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Collection<LoginLog> userLogins;
 
     public User(String username, String password, String email) {
@@ -104,6 +104,11 @@ public class User {
 
     public void setUserOrders(Collection<Order> userOrders) {
         this.userOrders = userOrders;
+    }
+
+    public void addUserOrder(Order order){
+        this.userOrders.add(order);
+        order.setOrderUser(this);
     }
 
     public Collection<LoginLog> getUserLogins() {

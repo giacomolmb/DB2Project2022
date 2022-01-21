@@ -28,6 +28,7 @@ public class UserService {
     }
 
     public User findUserById(int userId) {
+        em.clear();
         return em.find(User.class, userId);
     }
 

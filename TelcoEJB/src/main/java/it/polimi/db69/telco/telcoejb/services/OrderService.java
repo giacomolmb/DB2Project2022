@@ -43,7 +43,8 @@ public class OrderService {
         User user = userService.findUserById(userId);
         Subscription subscription = findBySubscriptionById(subscriptionId);
         Order order = new Order(datetime, user, subscription);
-        em.persist(order);
+        user.addUserOrder(order);
+        em.persist(user);
         return order;
     }
 
