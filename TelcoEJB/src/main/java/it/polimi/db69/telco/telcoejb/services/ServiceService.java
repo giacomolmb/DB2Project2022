@@ -22,27 +22,6 @@ public class ServiceService {
         return em.find(Service.class, serviceId);
     }
 
-    public Service createService(String type, int min, int sms, double feemin, double feesms, int giga, double feegiga, int packageid){
-        Service service;
-        if (type.equals("fixedphone")){
-            service = new FixedPhone();
-        }
-        else if (type.equals("mobilephone")){
-            service = new MobilePhone(min, sms, feemin, feesms);
-        }
-        else if (type.equals("fixedinternet")){
-            service = new FixedInternet(giga, feegiga);
-        }
-        else {
-            service = new MobileInternet(giga, feegiga);
-        }
-
-        service.setServicePackage(packageService.findPackageById(packageid));
-        em.persist(service);
-
-        return service;
-    }
-
     public Service createMobilePhone(int min, int sms, double minFee, double smsFee, int packageId){
         Service service = new MobilePhone(min, sms, minFee, smsFee);
         service.setServicePackage(packageService.findPackageById(packageId));

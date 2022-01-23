@@ -52,7 +52,7 @@ public class ServicePackageService {
         return servicePackage;
     }
 
-    public Collection<ServicePackage> findAllPackages (){
+    public Collection<ServicePackage> findAllPackages(){
         if (em.createNamedQuery("package.getAll", ServicePackage.class).getResultList().isEmpty())
             return null;
         return em.createNamedQuery("package.getAll", ServicePackage.class).getResultList();

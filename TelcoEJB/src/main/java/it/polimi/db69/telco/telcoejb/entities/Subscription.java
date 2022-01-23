@@ -24,10 +24,10 @@ public class Subscription {
     @JoinColumn(name = "vpid")
     private ValidityPeriod subValidityPeriod;
 
-    @OneToOne(mappedBy = "orderSubscription", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "orderSubscription", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Order subOrder;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany()
     @JoinTable(name="subscriptionproduct",
             joinColumns=@JoinColumn(name = "subscriptionid"),
             inverseJoinColumns=@JoinColumn(name="productid"))

@@ -22,7 +22,7 @@ public class ValidityPeriod {
     @JoinColumn(name = "packageid")
     private ServicePackage vpServicePackage;
 
-    @OneToMany(mappedBy = "subValidityPeriod", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "subValidityPeriod", cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private Collection<Subscription> subscriptions;
 
     public ValidityPeriod(){}
