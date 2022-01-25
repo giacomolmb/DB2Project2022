@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `telco_db` /*!40100 DEFAULT CHARACTER SET utf8 */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `telco_db`;
 -- MySQL dump 10.13  Distrib 8.0.27, for macos11 (x86_64)
 --
 -- Host: localhost    Database: telco_db
@@ -39,7 +41,7 @@ CREATE TABLE `alert` (
 
 LOCK TABLES `alert` WRITE;
 /*!40000 ALTER TABLE `alert` DISABLE KEYS */;
-INSERT INTO `alert` VALUES (4,1,'2021-12-24 17:04:30',192);
+INSERT INTO `alert` VALUES (4,1,'2021-12-24 17:04:30',2616);
 /*!40000 ALTER TABLE `alert` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -61,7 +63,7 @@ CREATE TABLE `customer_order` (
   KEY `order_subscriptionid_idx` (`subscriptionId`),
   CONSTRAINT `order_subscriptionid` FOREIGN KEY (`subscriptionId`) REFERENCES `subscription` (`id`),
   CONSTRAINT `order_userid` FOREIGN KEY (`userid`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,7 +72,7 @@ CREATE TABLE `customer_order` (
 
 LOCK TABLES `customer_order` WRITE;
 /*!40000 ALTER TABLE `customer_order` DISABLE KEYS */;
-INSERT INTO `customer_order` VALUES (65,'2021-12-29 11:40:34','ACCEPTED',1,66),(66,'2021-12-29 11:40:50','ACCEPTED',1,67),(67,'2021-12-29 11:41:05','ACCEPTED',1,68),(68,'2021-12-29 11:41:26','ACCEPTED',5,69),(69,'2021-12-29 11:42:37','ACCEPTED',5,70),(70,'2021-12-29 11:47:49','ACCEPTED',1,71),(71,'2021-12-30 14:15:12','REJECTED',1,72),(72,'2021-12-30 14:24:46','REJECTED',5,73);
+INSERT INTO `customer_order` VALUES (65,'2021-12-29 11:40:34','ACCEPTED',1,66),(66,'2021-12-29 11:40:50','ACCEPTED',1,67),(67,'2021-12-29 11:41:05','ACCEPTED',1,68),(68,'2021-12-29 11:41:26','ACCEPTED',5,69),(69,'2021-12-29 11:42:37','ACCEPTED',5,70),(70,'2021-12-29 11:47:49','ACCEPTED',1,71),(71,'2021-12-30 14:15:12','ACCEPTED',1,72),(72,'2021-12-30 14:24:46','REJECTED',5,73),(73,'2022-01-04 20:48:41','ACCEPTED',1,74),(74,'2022-01-21 14:20:12','ACCEPTED',1,75),(75,'2022-01-21 14:26:38','ACCEPTED',1,76),(76,'2022-01-21 14:27:21','ACCEPTED',1,77),(77,'2022-01-21 14:35:16','ACCEPTED',1,78),(78,'2022-01-21 14:37:42','ACCEPTED',1,79),(79,'2022-01-21 14:44:11','ACCEPTED',1,80),(80,'2022-01-21 14:47:23','ACCEPTED',1,81),(81,'2022-01-21 14:48:55','ACCEPTED',1,82),(82,'2022-01-21 14:53:25','ACCEPTED',1,83),(83,'2022-01-25 17:06:37','ACCEPTED',1,84);
 /*!40000 ALTER TABLE `customer_order` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -196,7 +198,7 @@ CREATE TABLE `login_log` (
   PRIMARY KEY (`id`),
   KEY `userid_idx` (`userid`),
   CONSTRAINT `loginlog_userid` FOREIGN KEY (`userid`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -205,7 +207,7 @@ CREATE TABLE `login_log` (
 
 LOCK TABLES `login_log` WRITE;
 /*!40000 ALTER TABLE `login_log` DISABLE KEYS */;
-INSERT INTO `login_log` VALUES (69,'2021-12-29 12:40:24',1),(70,'2021-12-29 12:41:18',5),(71,'2021-12-29 12:42:01',1),(72,'2021-12-29 12:42:20',5),(73,'2021-12-29 12:47:38',1),(74,'2021-12-29 19:55:29',1),(75,'2021-12-30 09:17:12',1),(76,'2021-12-30 15:15:01',1),(77,'2021-12-30 15:24:38',5);
+INSERT INTO `login_log` VALUES (69,'2021-12-29 12:40:24',1),(70,'2021-12-29 12:41:18',5),(71,'2021-12-29 12:42:01',1),(72,'2021-12-29 12:42:20',5),(73,'2021-12-29 12:47:38',1),(74,'2021-12-29 19:55:29',1),(75,'2021-12-30 09:17:12',1),(76,'2021-12-30 15:15:01',1),(77,'2021-12-30 15:24:38',5),(78,'2021-12-31 13:29:15',1),(79,'2021-12-31 14:40:04',1),(80,'2021-12-31 14:41:38',1),(81,'2021-12-31 14:43:51',1),(82,'2021-12-31 14:46:28',1),(83,'2021-12-31 14:49:13',1),(84,'2021-12-31 14:52:07',1),(85,'2021-12-31 14:54:16',1),(86,'2021-12-31 14:56:53',1),(87,'2021-12-31 15:13:53',1),(88,'2022-01-04 21:48:27',1),(89,'2022-01-20 15:01:32',1),(90,'2022-01-20 15:22:24',1),(91,'2022-01-21 15:19:43',1),(92,'2022-01-21 15:26:28',1),(93,'2022-01-21 15:33:40',1),(94,'2022-01-21 15:34:40',1),(95,'2022-01-21 15:37:16',1),(96,'2022-01-21 15:42:45',1),(97,'2022-01-21 15:44:23',1),(98,'2022-01-21 15:45:06',1),(99,'2022-01-21 15:46:35',1),(100,'2022-01-21 15:48:38',1),(101,'2022-01-21 15:53:06',1),(102,'2022-01-25 18:04:14',9),(103,'2022-01-25 18:06:01',1),(104,'2022-01-25 18:06:14',1),(105,'2022-01-25 18:10:01',1),(106,'2022-01-25 18:27:23',1),(107,'2022-01-25 20:10:26',5);
 /*!40000 ALTER TABLE `login_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -286,7 +288,7 @@ CREATE TABLE `packagesales` (
 
 LOCK TABLES `packagesales` WRITE;
 /*!40000 ALTER TABLE `packagesales` DISABLE KEYS */;
-INSERT INTO `packagesales` VALUES (29,17,1,192,912,1),(30,19,1,168,1128,2),(30,20,3,540,1620,2),(31,23,1,540,1620,2);
+INSERT INTO `packagesales` VALUES (29,16,1,120,480,1),(29,17,10,1920,2640,8),(30,18,1,96,216,1),(30,19,1,168,1128,2),(30,20,3,540,1620,2),(31,23,2,1080,2160,5);
 /*!40000 ALTER TABLE `packagesales` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -441,7 +443,7 @@ CREATE TABLE `subscription` (
   PRIMARY KEY (`id`),
   KEY `subscription_vpid_idx` (`vpid`),
   CONSTRAINT `subscription_vpid` FOREIGN KEY (`vpid`) REFERENCES `validityperiod` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=85 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -450,7 +452,7 @@ CREATE TABLE `subscription` (
 
 LOCK TABLES `subscription` WRITE;
 /*!40000 ALTER TABLE `subscription` DISABLE KEYS */;
-INSERT INTO `subscription` VALUES (66,17,'2022-01-01'),(67,19,'2022-01-01'),(68,23,'2022-01-01'),(69,20,'2022-01-01'),(70,20,'2022-01-01'),(71,20,'2022-02-01'),(72,17,'2022-01-01'),(73,17,'2022-01-01');
+INSERT INTO `subscription` VALUES (66,17,'2022-01-01'),(67,19,'2022-01-01'),(68,23,'2022-01-01'),(69,20,'2022-01-01'),(70,20,'2022-01-01'),(71,20,'2022-02-01'),(72,17,'2022-01-01'),(73,17,'2022-01-01'),(74,17,'2022-01-12'),(75,17,'2022-01-21'),(76,17,'2022-02-22'),(77,23,'2022-02-03'),(78,17,'2022-02-01'),(79,18,'2022-02-02'),(80,17,'2022-02-06'),(81,16,'2022-01-30'),(82,17,'2022-02-21'),(83,17,'2022-02-22'),(84,17,'2022-02-01');
 /*!40000 ALTER TABLE `subscription` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -477,7 +479,7 @@ CREATE TABLE `subscriptionproduct` (
 
 LOCK TABLES `subscriptionproduct` WRITE;
 /*!40000 ALTER TABLE `subscriptionproduct` DISABLE KEYS */;
-INSERT INTO `subscriptionproduct` VALUES (66,106),(67,106),(69,106),(67,107),(70,107),(68,110),(68,112);
+INSERT INTO `subscriptionproduct` VALUES (66,106),(67,106),(69,106),(76,106),(77,106),(78,106),(80,106),(81,106),(84,106),(67,107),(70,107),(79,107),(74,108),(76,108),(84,108),(68,110),(77,110),(68,112),(77,112);
 /*!40000 ALTER TABLE `subscriptionproduct` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -497,7 +499,7 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username_UNIQUE` (`username`),
   UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -506,7 +508,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'admin','admin','admin@telco.com',1),(5,'giacomino','giacomino','giacomino@gmail.com',1),(6,'valeria','valeria9','valeria@gmail.com',0),(7,'leomessi','leomessi','leomessi@mail.com',0);
+INSERT INTO `user` VALUES (1,'admin','admin','admin@telco.com',1),(5,'giacomino','giacomino','giacomino@gmail.com',1),(6,'valeria','valeria9','valeria@gmail.com',0),(7,'leomessi','leomessi','leomessi@mail.com',0),(9,'gianfrancesco','gianfrancesco','gianfrancesco@mail.polimi.it',0);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -583,4 +585,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-31  9:17:41
+-- Dump completed on 2022-01-25 20:12:27
