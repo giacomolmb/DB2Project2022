@@ -20,14 +20,13 @@ public class ServicePackage {
     @Column(name="name", nullable = false, length = 45)
     private String name;
 
-    @OneToMany(mappedBy = "vpServicePackage")
+    @OneToMany(mappedBy = "vpServicePackage", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Collection<ValidityPeriod> packageValidityPeriods;
 
-    @OneToMany(mappedBy = "servicePackage")
+    @OneToMany(mappedBy = "servicePackage", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Collection<Service> services;
 
-
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(name="packageproduct",
             joinColumns=@JoinColumn(name="packageid"),
             inverseJoinColumns=@JoinColumn(name="productid"))

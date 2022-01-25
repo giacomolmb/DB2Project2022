@@ -47,6 +47,7 @@ public class SigninServlet extends HttpServlet {
 
         if(request.getSession().getAttribute("successMessage") != null){
             ctx.setVariable("successMessage", request.getSession().getAttribute("successMessage"));
+            request.getSession().removeAttribute("successMessage");
         }
 
         templateEngine.process(path, ctx, response.getWriter());

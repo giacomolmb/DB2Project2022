@@ -35,7 +35,7 @@ public class User {
     @OneToMany(mappedBy = "alertUser")
     private Collection<Alert> userAlerts;
 
-    @OneToMany(mappedBy = "orderUser", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "orderUser", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     private Collection<Order> userOrders;
 
     @OneToMany(mappedBy = "loggedUser", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)

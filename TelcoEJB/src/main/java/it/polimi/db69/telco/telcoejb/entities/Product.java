@@ -24,7 +24,7 @@ public class Product {
     @ManyToMany(mappedBy = "products")
     private Collection<ServicePackage> servicePackages;
 
-    @ManyToMany(mappedBy = "subscriptionProducts")
+    @ManyToMany(mappedBy = "subscriptionProducts", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private Collection<Subscription> productSubscriptions;
 
     public Product() {
